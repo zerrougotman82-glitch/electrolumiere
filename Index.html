@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SARL ELECTROLUMIERE — L'Excellence Électrique depuis 1987</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --dark: #080C14;
+  --dark2: #0D1420;
+  --dark3: #111B2E;
+  --gold: #3B9EE8;
+  --gold2: #7FC4F5;
+  --gold-dim: rgba(59,158,232,0.15);
+  --cream: #EFF4FA;
+  --muted: #7A8FA8;
+  --border: rgba(59,158,232,0.22);
+  --white: #ffffff;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--cream);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(30px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; } to { opacity:1; }
+}
+@keyframes slideRight {
+  from { transform: scaleX(0); } to { transform: scaleX(1); }
+}
+@keyframes pulse {
+  0%,100% { opacity:1; } 50% { opacity:.4; }
+}
+@keyframes glow {
+  0%,100% { box-shadow: 0 0 20px rgba(59,158,232,.3); }
+  50% { box-shadow: 0 0 40px rgba(59,158,232,.6); }
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  display: flex; align-items:center; justify-content:space-between;
+  padding: 1.2rem 5rem;
+  background: rgba(13,15,20,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  animation: fadeIn .8s ease both;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 600; letter-spacing:.1em;
+  color: var(--cream); text-decoration:none;
+  display:flex; align-items:center; gap:.8rem;
+}
+.nav-logo-bolt {
+  width: 28px; height: 28px;
+  background: var(--gold);
+  clip-path: polygon(60% 0%, 100% 0%, 40% 50%, 80% 50%, 0% 100%, 20% 55%, -10% 55%);
+  flex-shrink:0;
+  animation: glow 3s ease-in-out infinite;
+}
+.nav-logo span { color: var(--gold); }
+.nav-links { display:flex; gap:2.5rem; list-style:none; }
+.nav-links a {
+  font-size:.73rem; letter-spacing:.2em; text-transform:uppercase;
+  color: var(--muted); text-decoration:none; transition: color .3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  font-size:.73rem; letter-spacing:.18em; text-transform:uppercase;
+  padding: .55rem 1.5rem;
+  border: 1px solid var(--gold); color: var(--gold); background:transparent;
+  cursor:pointer; font-family:'Jost',sans-serif;
+  transition: all .3s;
+}
+.nav-cta:hover { background:var(--gold); color:var(--dark); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction:column; justify-content:center;
+  padding: 8rem 5rem 5rem;
+  position: relative; overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(232,160,32,.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(232,160,32,.05) 0%, transparent 60%);
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(232,160,32,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,160,32,.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-content { position:relative; z-index:1; max-width: 780px; animation: fadeUp .9s .2s ease both; }
+.hero-badge {
+  display:inline-flex; align-items:center; gap:.7rem;
+  font-size:.68rem; letter-spacing:.3em; text-transform:uppercase;
+  color: var(--gold); margin-bottom: 2rem;
+  border: 1px solid var(--border);
+  padding: .45rem 1.2rem;
+}
+.badge-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation: pulse 2s ease infinite; }
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  font-weight: 300; line-height: 1.05;
+  margin-bottom: 1.8rem;
+}
+.hero-title em { font-style:italic; color:var(--gold); }
+.hero-title strong { font-weight:600; }
+.hero-desc {
+  font-size:1rem; line-height:1.85; color:var(--muted);
+  max-width:560px; margin-bottom:3rem;
+}
+.hero-actions { display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap; margin-bottom:4rem; }
+.btn-primary {
+  padding:.85rem 2.4rem;
+  background: var(--gold); color: var(--dark);
+  font-family:'Jost',sans-serif; font-size:.78rem;
+  font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  border:none; cursor:pointer; transition: all .3s;
+  text-decoration:none; display:inline-block;
+}
+.btn-primary:hover { background:var(--gold2); transform:translateY(-2px); }
+.btn-outline {
+  padding:.85rem 2.4rem;
+  background:transparent; color:var(--cream);
+  font-family:'Jost',sans-serif; font-size:.78rem;
+  font-weight:400; letter-spacing:.18em; text-transform:uppercase;
+  border: 1px solid rgba(255,255,255,.2); cursor:pointer; transition: all .3s;
+  text-decoration:none; display:inline-block;
+}
+.btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+
+/* HERO STATS */
+.hero-stats {
+  display:flex; gap:0; animation: fadeUp .9s .4s ease both;
+  border-top: 1px solid var(--border);
+  padding-top: 2.5rem;
+}
+.stat {
+  flex:1; padding-right:2.5rem; margin-right:2.5rem;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border:none; margin:0; padding:0; }
+.stat-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.8rem; font-weight:300; color:var(--gold);
+  line-height:1;
+}
+.stat-label { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:.4rem; }
+
+/* SCROLL INDICATOR */
+.scroll-hint {
+  position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:.6rem;
+  font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+  animation: fadeIn 1.5s 1s ease both;
+}
+.scroll-line {
+  width:1px; height:50px;
+  background: linear-gradient(var(--gold), transparent);
+  animation: slideRight 1.5s 1.5s ease both;
+}
+
+/* ── SECTION BASE ── */
+section { padding: 7rem 5rem; position:relative; }
+.section-label {
+  font-size:.68rem; letter-spacing:.35em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:1rem; display:block;
+}
+.section-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size: clamp(2rem,3.5vw,3.2rem);
+  font-weight:300; line-height:1.15;
+}
+.section-title em { font-style:italic; }
+.title-line {
+  width:60px; height:1px;
+  background:var(--gold); margin: 1.5rem 0 0;
+  animation: slideRight 1s ease both;
+  transform-origin:left;
+}
+
+/* ── HISTOIRE ── */
+.histoire { background: var(--dark2); }
+.histoire-inner {
+  display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start;
+}
+.histoire-text {}
+.histoire-quote {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem; font-style:italic; font-weight:300;
+  color:var(--gold2); line-height:1.6;
+  border-left:2px solid var(--gold); padding-left:2rem;
+  margin: 2.5rem 0;
+}
+.histoire-body { font-size:.9rem; line-height:1.9; color:var(--muted); }
+.generations { display:flex; flex-direction:column; gap:0; }
+.gen-item {
+  padding: 2rem 2rem 2rem 0;
+  border-bottom: 1px solid var(--border);
+  display:grid; grid-template-columns:auto 1fr; gap:1.5rem; align-items:start;
+}
+.gen-item:last-child { border:none; }
+.gen-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:3rem; font-weight:300; color:var(--border);
+  line-height:1; margin-top:-.3rem;
+  transition: color .4s;
+}
+.gen-item:hover .gen-num { color:var(--gold); }
+.gen-tag {
+  font-size:.65rem; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:.4rem;
+}
+.gen-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem; margin-bottom:.5rem;
+}
+.gen-desc { font-size:.83rem; line-height:1.75; color:var(--muted); }
+
+/* ── EXPERTISES ── */
+.expertises { background: var(--dark); }
+.expertises-header { margin-bottom:4rem; }
+.services-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.service-card {
+  background:var(--dark); padding:2.8rem;
+  transition: background .4s;
+  position:relative; overflow:hidden;
+}
+.service-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  transform:scaleX(0); transform-origin:left;
+  transition: transform .5s ease;
+}
+.service-card:hover::before { transform:scaleX(1); }
+.service-card:hover { background: var(--dark3); }
+.service-icon {
+  width:44px; height:44px; margin-bottom:1.8rem;
+  border: 1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; color:var(--gold);
+  transition: border-color .4s, background .4s;
+}
+.service-card:hover .service-icon { background:var(--gold-dim); border-color:var(--gold); }
+.service-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem; color:rgba(232,160,32,.3);
+  margin-bottom:.8rem; letter-spacing:.1em;
+}
+.service-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.35rem; margin-bottom:.9rem; font-weight:400;
+}
+.service-desc { font-size:.82rem; line-height:1.8; color:var(--muted); }
+.service-detail { font-size:.73rem; color:var(--gold); margin-top:1.2rem; letter-spacing:.05em; }
+
+/* ── RÉFÉRENCES ── */
+.references { background:var(--dark2); }
+.refs-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3.5rem;
+}
+.ref-category {
+  border: 1px solid var(--border); padding:2.2rem;
+  transition: border-color .3s, background .3s;
+}
+.ref-category:hover { border-color:var(--gold); background:var(--gold-dim); }
+.ref-cat-icon { font-size:1.5rem; margin-bottom:1rem; }
+.ref-cat-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem; margin-bottom:1.2rem; color:var(--gold2);
+}
+.ref-list { list-style:none; display:flex; flex-direction:column; gap:.7rem; }
+.ref-list li {
+  font-size:.8rem; line-height:1.6; color:var(--muted);
+  padding-left:1rem; position:relative;
+}
+.ref-list li::before {
+  content:''; position:absolute; left:0; top:.55em;
+  width:5px; height:1px; background:var(--gold);
+}
+
+/* ── QUALITÉ ── */
+.qualite { background:var(--dark); }
+.qualite-inner { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.qualite-text {}
+.qualite-text .section-title { margin-bottom:1.5rem; }
+.qualite-body { font-size:.9rem; line-height:1.9; color:var(--muted); margin:2rem 0; }
+.badges-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.badge-item {
+  border: 1px solid var(--border); padding:1.4rem;
+  display:flex; flex-direction:column; gap:.4rem;
+  transition: border-color .3s;
+}
+.badge-item:hover { border-color:var(--gold); }
+.badge-title { font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--cream); }
+.badge-sub { font-size:.73rem; color:var(--muted); }
+.qualite-visual {
+  border: 1px solid var(--border); padding:3rem;
+  background:var(--dark2); position:relative; text-align:center;
+}
+.qualite-visual::before {
+  content:'';
+  position:absolute; top:1rem; left:1rem; right:-1rem; bottom:-1rem;
+  border:1px solid var(--gold-dim); z-index:-1;
+}
+.cert-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:5rem; font-weight:300; color:var(--gold);
+  line-height:1; margin-bottom:.5rem;
+}
+.cert-label { font-size:.75rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+.cert-divider { width:40px; height:1px; background:var(--border); margin:1.5rem auto; }
+.cert-text { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-style:italic; color:var(--gold2); line-height:1.5; }
+
+/* ── CONTACT ── */
+.contact { background:var(--dark2); }
+.contact-inner { display:grid; grid-template-columns:1fr 1fr; gap:6rem; align-items:start; }
+.contact-info .section-title { margin-bottom:.8rem; }
+.contact-body { font-size:.9rem; line-height:1.9; color:var(--muted); margin:1.5rem 0 2.5rem; }
+.contact-items { display:flex; flex-direction:column; gap:1.4rem; }
+.contact-item { display:flex; gap:1.2rem; align-items:flex-start; }
+.contact-icon {
+  width:36px; height:36px; flex-shrink:0;
+  border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:.9rem; color:var(--gold); margin-top:.1rem;
+}
+.contact-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.3rem; }
+.contact-val { font-size:.88rem; color:var(--cream); }
+
+/* FORM */
+.contact-form { display:flex; flex-direction:column; gap:1.2rem; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+.form-group { display:flex; flex-direction:column; gap:.5rem; }
+.form-label { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+.form-input, .form-textarea {
+  background:var(--dark); border:1px solid var(--border);
+  color:var(--cream); font-family:'Jost',sans-serif; font-size:.88rem; font-weight:300;
+  padding:.85rem 1.1rem; transition: border-color .3s; outline:none;
+  resize:none;
+}
+.form-input:focus, .form-textarea:focus { border-color:var(--gold); }
+.form-input::placeholder, .form-textarea::placeholder { color:var(--muted); }
+.form-submit {
+  padding:.9rem 2.4rem; align-self:flex-start;
+  background:var(--gold); color:var(--dark);
+  font-family:'Jost',sans-serif; font-size:.78rem;
+  font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  border:none; cursor:pointer; transition: all .3s;
+}
+.form-submit:hover { background:var(--gold2); transform:translateY(-2px); }
+
+/* ── FOOTER ── */
+footer {
+  background:var(--dark); border-top:1px solid var(--border);
+  padding:3rem 5rem;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.footer-logo {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem; font-weight:600; color:var(--cream);
+}
+.footer-logo span { color:var(--gold); }
+.footer-copy { font-size:.72rem; letter-spacing:.1em; color:var(--muted); }
+.footer-links { display:flex; gap:2rem; list-style:none; }
+.footer-links a { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .3s; }
+.footer-links a:hover { color:var(--gold); }
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px) {
+  nav { padding:1rem 2rem; }
+  .nav-links { display:none; }
+  section { padding:5rem 2rem; }
+  .hero { padding:7rem 2rem 4rem; }
+  .hero-stats { flex-wrap:wrap; gap:1.5rem; }
+  .stat { border:none; padding:0; margin:0; flex:0 0 45%; }
+  .histoire-inner, .qualite-inner, .contact-inner { grid-template-columns:1fr; gap:3rem; }
+  .services-grid, .refs-grid { grid-template-columns:1fr; }
+  .form-row { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:1.5rem; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-bolt"></div>
+    ELECTRO<span>LUMIERE</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#histoire">Histoire</a></li>
+    <li><a href="#expertises">Expertises</a></li>
+    <li><a href="#references">Références</a></li>
+    <li><a href="#qualite">Qualité</a></li>
+    <li><a href="#fabrication" style="color:var(--gold)">Nouveau ✦</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Devis Technique</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      SARL ELECTROLUMIERE — Constantine, Algérie
+    </div>
+    <h1 class="hero-title">
+      L'Excellence<br>
+      <em>Électrique</em><br>
+      <strong>depuis 1987</strong>
+    </h1>
+    <p class="hero-desc">
+      De la conception du Génie Civil à la mise en service MT/BT. Solutions clés en main pour infrastructures stratégiques et industrielles. Trois générations d'expertise au service de l'Algérie.
+    </p>
+    <div class="hero-actions">
+      <a href="#references" class="btn-primary">Voir nos Références</a>
+      <a href="#contact" class="btn-outline">Demander un Devis</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">+37</div>
+        <div class="stat-label">Années d'expertise</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1600</div>
+        <div class="stat-label">kVA Max traité</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">6km</div>
+        <div class="stat-label">Liaison record MT</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Générations familiales</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Découvrir</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- HISTOIRE -->
+<section class="histoire" id="histoire">
+  <div class="histoire-inner">
+    <div class="histoire-text">
+      <span class="section-label">Héritage & Vision</span>
+      <h2 class="section-title">Une lignée,<br><em>une exigence</em></h2>
+      <div class="title-line"></div>
+      <blockquote class="histoire-quote">
+        "Trois générations, une seule exigence : La maîtrise absolue de l'énergie."
+      </blockquote>
+      <p class="histoire-body">
+        Fondée à Constantine en 1987, la SARL ELECTROLUMIERE s'est imposée comme un acteur incontournable des travaux électriques Moyenne et Basse Tension en Algérie. De père en fils, la maîtrise du métier se transmet avec rigueur et passion, au service des grands projets du pays.
+      </p>
+    </div>
+    <div class="generations">
+      <div class="gen-item">
+        <div class="gen-num">01</div>
+        <div>
+          <div class="gen-tag">1ère Génération — Fondateur</div>
+          <div class="gen-name">Abdelmajid ZERROUG</div>
+          <p class="gen-desc">Le pionnier qui a posé les bases de la rigueur et du savoir-faire électrique de la famille depuis 1987. Une vision fondatrice qui perdure jusqu'à aujourd'hui.</p>
+        </div>
+      </div>
+      <div class="gen-item">
+        <div class="gen-num">02</div>
+        <div>
+          <div class="gen-tag">2ème Génération — Développement</div>
+          <div class="gen-name">Salim ZERROUG</div>
+          <p class="gen-desc">Qui a consolidé l'entreprise depuis 2012 et mené les grands projets stratégiques comme les aéroports de Constantine et d'Annaba, et les pôles universitaires.</p>
+        </div>
+      </div>
+      <div class="gen-item">
+        <div class="gen-num">03</div>
+        <div>
+          <div class="gen-tag">3ème Génération — L'Avenir</div>
+          <div class="gen-name">La Relève</div>
+          <p class="gen-desc">Garant de la modernisation technique et de la pérennité de l'entreprise pour les décennies à venir. L'innovation au service d'une tradition d'excellence.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISES -->
+<section class="expertises" id="expertises">
+  <div class="expertises-header">
+    <span class="section-label">Piliers Techniques</span>
+    <h2 class="section-title">Maîtrise totale du<br><em>cycle de projet électrique</em></h2>
+    <div class="title-line"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <div class="service-num">01 /</div>
+      <div class="service-name">Postes Transformateurs</div>
+      <p class="service-desc">Réalisation complète du Génie Civil et équipement électromécanique de postes de livraison MT/BT. Installation certifiée et mise en service rigoureuse.</p>
+      <div class="service-detail">Jusqu'à 1×1600 kVA et 2×1250 kVA</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔌</div>
+      <div class="service-num">02 /</div>
+      <div class="service-name">Réseaux de Distribution</div>
+      <p class="service-desc">Pose de câbles MT et BT sur de longues distances pour infrastructures critiques. Maîtrise des liaisons MT (120mm²) et BT (240mm²) sur tracés complexes.</p>
+      <div class="service-detail">Liaisons jusqu'à +6 km</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏗️</div>
+      <div class="service-num">03 /</div>
+      <div class="service-name">Infrastructures Stratégiques</div>
+      <p class="service-desc">Solutions d'énergie haute puissance pour sites d'envergure nationale : aéroports, pôles universitaires et installation de groupes électrogènes de forte puissance.</p>
+      <div class="service-detail">Projets d'envergure nationale</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏛️</div>
+      <div class="service-num">04 /</div>
+      <div class="service-name">Génie Civil Électrique</div>
+      <p class="service-desc">Conception et réalisation de l'ensemble des ouvrages de génie civil associés aux installations électriques : tranchées, massifs, locaux techniques.</p>
+      <div class="service-detail">Conception à la réalisation</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💡</div>
+      <div class="service-num">05 /</div>
+      <div class="service-name">Éclairage Public</div>
+      <p class="service-desc">Études et réalisation de réseaux d'éclairage public pour voiries, espaces urbains et sites industriels. Conformité aux normes en vigueur.</p>
+      <div class="service-detail">Normes SONELGAZ</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔋</div>
+      <div class="service-num">06 /</div>
+      <div class="service-name">Groupes Électrogènes</div>
+      <p class="service-desc">Fourniture, installation et mise en service de groupes électrogènes de forte puissance pour assurer la continuité d'alimentation des sites stratégiques.</p>
+      <div class="service-detail">Haute puissance & continuité</div>
+    </div>
+  </div>
+</section>
+
+<!-- RÉFÉRENCES -->
+<section class="references" id="references">
+  <span class="section-label">Projets & Références</span>
+  <h2 class="section-title">Des solutions pour<br><em>sites stratégiques</em></h2>
+  <div class="title-line"></div>
+  <div class="refs-grid">
+    <div class="ref-category">
+      <div class="ref-cat-icon">✈️</div>
+      <div class="ref-cat-name">Aéronautique</div>
+      <ul class="ref-list">
+        <li>Aéroport Mohamed Boudiaf (Constantine) — Travaux d'électricité et éclairage public</li>
+        <li>Aéroport Rabah Bitat (Annaba) — Infrastructures électriques aéroportuaires</li>
+      </ul>
+    </div>
+    <div class="ref-category">
+      <div class="ref-cat-icon">🏭</div>
+      <div class="ref-cat-name">Industrie</div>
+      <ul class="ref-list">
+        <li>SARL TRIKI AL PROD — Postes de transformation MT/BT</li>
+        <li>GLOBAL FLEXIBLE PACKAGING — Équipement électromécanique</li>
+        <li>COSIDER — Partenaire sur projets d'envergure</li>
+      </ul>
+    </div>
+    <div class="ref-category">
+      <div class="ref-cat-icon">🏛️</div>
+      <div class="ref-cat-name">Secteur Public</div>
+      <ul class="ref-list">
+        <li>Pôle Universitaire Ali Mendjeli — Aménagement électrique complet</li>
+        <li>Cour de Justice Zouaghi Sliman — Solutions d'énergie sécurisées</li>
+        <li>Lycées et Collèges — Réseaux et éclairage (plusieurs établissements)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- QUALITÉ -->
+<section class="qualite" id="qualite">
+  <div class="qualite-inner">
+    <div class="qualite-text">
+      <span class="section-label">Garantie Totale</span>
+      <h2 class="section-title">Engagement<br><em>Qualité & Sécurité</em></h2>
+      <div class="title-line"></div>
+      <p class="qualite-body">
+        Chaque projet livré par la SARL ELECTROLUMIERE est accompagné d'une Attestation de Bonne Exécution. C'est notre gage de fiabilité absolue et de conformité rigoureuse aux normes SONELGAZ. La sécurité de vos installations est notre priorité absolue.
+      </p>
+      <div class="badges-grid">
+        <div class="badge-item">
+          <div class="badge-title">Sécurité Industrielle</div>
+          <div class="badge-sub">Normes en vigueur</div>
+        </div>
+        <div class="badge-item">
+          <div class="badge-title">Normes Internationales</div>
+          <div class="badge-sub">Conformité totale</div>
+        </div>
+        <div class="badge-item">
+          <div class="badge-title">Maintenance Préventive</div>
+          <div class="badge-sub">Suivi post-installation</div>
+        </div>
+        <div class="badge-item">
+          <div class="badge-title">Expertise Certifiée</div>
+          <div class="badge-sub">SONELGAZ agréé</div>
+        </div>
+      </div>
+    </div>
+    <div class="qualite-visual">
+      <div class="cert-num">100%</div>
+      <div class="cert-label">Projets avec PV de Réception</div>
+      <div class="cert-divider"></div>
+      <div class="cert-text">"Conformité rigoureuse aux normes SONELGAZ — sans exception."</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- COMING SOON — FABRICATION ARMOIRES -->
+<section class="coming-soon" id="fabrication">
+  <div class="cs-bg"></div>
+  <div class="cs-inner">
+    <div class="cs-badge">
+      <span class="badge-dot"></span>
+      Bientôt Disponible
+    </div>
+    <h2 class="cs-title">Fabrication <em>d'Armoires Électriques</em><br>Made in Algeria</h2>
+    <p class="cs-desc">
+      ELECTROLUMIERE franchit une nouvelle étape : la fabrication en interne d'armoires électriques MT/BT industrielles et de distribution BT. Un savoir-faire local, une qualité certifiée.
+    </p>
+    <div class="cs-products">
+      <div class="cs-product">
+        <div class="cs-product-icon">⚡</div>
+        <div class="cs-product-name">Armoires MT/BT Industrielles</div>
+        <p class="cs-product-desc">Armoires de puissance pour postes de transformation et infrastructures industrielles lourdes. Conçues et assemblées selon les normes SONELGAZ.</p>
+        <div class="cs-product-tag">Haute puissance · Certifiées</div>
+      </div>
+      <div class="cs-divider"></div>
+      <div class="cs-product">
+        <div class="cs-product-icon">🔌</div>
+        <div class="cs-product-name">Armoires de Distribution BT</div>
+        <p class="cs-product-desc">Tableaux de distribution basse tension pour bâtiments, sites publics et industriels. Fabrication sur mesure selon les besoins du projet.</p>
+        <div class="cs-product-tag">Sur mesure · Toutes puissances</div>
+      </div>
+    </div>
+    <div class="cs-footer">
+      <div class="cs-notify">
+        <span class="cs-notify-text">Être informé au lancement</span>
+        <div class="cs-notify-form">
+          <input type="email" class="cs-input" placeholder="votre@email.com"/>
+          <button class="cs-btn" onclick="notifyMe(this)">Me notifier</button>
+        </div>
+      </div>
+      <div class="cs-stats">
+        <div class="cs-stat"><span class="cs-stat-num">2025</span><span class="cs-stat-label">Année de lancement</span></div>
+        <div class="cs-stat"><span class="cs-stat-num">100%</span><span class="cs-stat-label">Fabrication locale</span></div>
+        <div class="cs-stat"><span class="cs-stat-num">+37</span><span class="cs-stat-label">Ans d'expertise</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.coming-soon {
+  padding: 7rem 5rem;
+  background: var(--dark2);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.cs-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(59,158,232,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 30% at 10% 90%, rgba(59,158,232,.05) 0%, transparent 60%);
+  pointer-events:none;
+}
+.cs-inner { position:relative; z-index:1; max-width:900px; margin:0 auto; text-align:center; }
+.cs-badge {
+  display:inline-flex; align-items:center; gap:.7rem;
+  font-size:.68rem; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--gold); border:1px solid var(--border);
+  padding:.45rem 1.2rem; margin-bottom:2rem;
+}
+.cs-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.2rem,4vw,3.8rem);
+  font-weight:300; line-height:1.1;
+  margin-bottom:1.5rem;
+}
+.cs-title em { font-style:italic; color:var(--gold); }
+.cs-desc {
+  font-size:.95rem; line-height:1.85; color:var(--muted);
+  max-width:620px; margin:0 auto 3.5rem;
+}
+.cs-products {
+  display:flex; align-items:stretch; gap:0;
+  border:1px solid var(--border);
+  margin-bottom:3.5rem;
+  text-align:left;
+}
+.cs-product {
+  flex:1; padding:2.5rem;
+  transition:background .3s;
+}
+.cs-product:hover { background:var(--gold-dim); }
+.cs-divider { width:1px; background:var(--border); flex-shrink:0; }
+.cs-product-icon { font-size:1.8rem; margin-bottom:1.2rem; }
+.cs-product-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem; margin-bottom:.8rem; color:var(--cream);
+}
+.cs-product-desc { font-size:.83rem; line-height:1.8; color:var(--muted); margin-bottom:1.2rem; }
+.cs-product-tag {
+  font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold); border:1px solid var(--border);
+  display:inline-block; padding:.3rem .8rem;
+}
+.cs-footer {
+  display:flex; gap:3rem; align-items:center; justify-content:space-between;
+  flex-wrap:wrap;
+}
+.cs-notify { display:flex; flex-direction:column; gap:.8rem; align-items:flex-start; }
+.cs-notify-text { font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+.cs-notify-form { display:flex; gap:0; }
+.cs-input {
+  background:var(--dark); border:1px solid var(--border); border-right:none;
+  color:var(--cream); font-family:'Jost',sans-serif; font-size:.85rem;
+  padding:.7rem 1.1rem; outline:none; width:220px;
+  transition:border-color .3s;
+}
+.cs-input:focus { border-color:var(--gold); }
+.cs-input::placeholder { color:var(--muted); }
+.cs-btn {
+  padding:.7rem 1.4rem;
+  background:var(--gold); color:var(--dark);
+  font-family:'Jost',sans-serif; font-size:.75rem;
+  font-weight:500; letter-spacing:.15em; text-transform:uppercase;
+  border:none; cursor:pointer; transition:all .3s; white-space:nowrap;
+}
+.cs-btn:hover { background:var(--gold2); }
+.cs-stats { display:flex; gap:2.5rem; }
+.cs-stat { display:flex; flex-direction:column; align-items:center; gap:.3rem; }
+.cs-stat-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem; font-weight:300; color:var(--gold); line-height:1;
+}
+.cs-stat-label { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); }
+
+@media(max-width:900px) {
+  .coming-soon { padding:5rem 2rem; }
+  .cs-products { flex-direction:column; }
+  .cs-divider { width:100%; height:1px; }
+  .cs-footer { flex-direction:column; align-items:center; text-align:center; }
+  .cs-notify { align-items:center; }
+}
+</style>
+
+<script>
+function notifyMe(btn) {
+  const input = btn.previousElementSibling;
+  if (!input.value || !input.value.includes('@')) {
+    input.style.borderColor = '#e84040';
+    setTimeout(() => input.style.borderColor = '', 1500);
+    return;
+  }
+  btn.textContent = '✓ Enregistré !';
+  btn.style.background = '#25D366';
+  input.value = '';
+  setTimeout(() => { btn.textContent = 'Me notifier'; btn.style.background = ''; }, 3000);
+}
+</script>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <span class="section-label">Nous Contacter</span>
+      <h2 class="section-title">Parlons de<br><em>votre projet</em></h2>
+      <div class="title-line"></div>
+      <p class="contact-body">
+        Vous avez un projet électrique d'envergure ? Notre équipe est disponible pour étudier votre besoin et vous proposer une solution technique adaptée.
+      </p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Siège Social</div>
+            <div class="contact-val">Ain El Bey, Constantine, Algérie</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Contact Direction</div>
+            <div class="contact-val">M. ZERROUG Salim — (+213) 05 50 95 16 21</div>
+            <div class="contact-val" style="margin-top:.4rem;">M. Z. Otman — (+213) 05 51 88 58 04</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <div class="contact-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="176476657b727b72746365787b627a7e72657257707a767e7b3974787a">[email&#160;protected]</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <form class="contact-form" id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Nom complet</label>
+            <input type="text" id="f-nom" class="form-input" placeholder="Votre nom" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Entreprise</label>
+            <input type="text" id="f-entreprise" class="form-input" placeholder="Votre société"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="f-email" class="form-input" placeholder="votre@email.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Téléphone</label>
+          <input type="tel" id="f-tel" class="form-input" placeholder="+213 ..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type de projet</label>
+          <input type="text" id="f-type" class="form-input" placeholder="Poste MT/BT, réseau, éclairage..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description du besoin</label>
+          <textarea id="f-msg" class="form-textarea" rows="4" placeholder="Décrivez votre projet électrique..." required></textarea>
+        </div>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+
+          <button type="button" class="btn-whatsapp" onclick="sendWhatsApp()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </button>
+        </div>
+        <div id="form-success" style="display:none; color:var(--gold); font-size:.85rem; margin-top:.8rem;">
+          ✓ Votre demande a été envoyée ! Nous vous contacterons sous 24h.
+        </div>
+      </form>
+
+      <style>
+        .btn-whatsapp {
+          display:inline-flex; align-items:center; gap:.6rem;
+          padding:.85rem 1.8rem;
+          background: #25D366; color:#fff;
+          font-family:'Jost',sans-serif; font-size:.78rem;
+          font-weight:500; letter-spacing:.12em; text-transform:uppercase;
+          border:none; cursor:pointer; transition:all .3s;
+        }
+        .btn-whatsapp:hover { background:#1ebe57; transform:translateY(-2px); }
+      </style>
+
+      <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        function getFormData() {
+          return {
+            nom: document.getElementById('f-nom').value || 'Non renseigné',
+            entreprise: document.getElementById('f-entreprise').value || 'Non renseignée',
+            email: document.getElementById('f-email').value || 'Non renseigné',
+            tel: document.getElementById('f-tel').value || 'Non renseigné',
+            type: document.getElementById('f-type').value || 'Non renseigné',
+            msg: document.getElementById('f-msg').value || 'Non renseigné',
+          };
+        }
+
+
+
+        function sendWhatsApp() {
+          const d = getFormData();
+          const text = '🔌 *Nouvelle demande ELECTROLUMIERE*\n\n👤 *Nom :* ' + d.nom + '\n🏢 *Entreprise :* ' + d.entreprise + '\n📧 *Email :* ' + d.email + '\n📞 *Tél :* ' + d.tel + '\n⚡ *Projet :* ' + d.type + '\n\n📝 *Message :*\n' + d.msg;
+          window.open('https://wa.me/213551885804?text=' + encodeURIComponent(text), '_blank');
+        }
+      </script>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">ELECTRO<span>LUMIERE</span> SARL</div>
+  <div class="footer-copy">© 2
