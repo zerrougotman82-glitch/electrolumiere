@@ -1,752 +1,689 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SARL ELECTROLUMIERE — L'Excellence Électrique depuis 1987</title>
-<meta name="description" content="SARL ELECTROLUMIERE — Entreprise algérienne spécialisée en travaux électriques MT/BT. Constantine, Algérie.">
+<meta name="description" content="SARL Electrolumière, Constantine (Algérie) : postes transformateurs MT/BT, réseaux de distribution, éclairage public, génie civil électrique et armoires. Depuis 1987." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --powder:#b8d4e8;--royal:#1a4a7a;--deep:#0d2d4f;
-  --mid:#2563a8;--light:#3b82c4;--white:#fff;
-  --glass:rgba(255,255,255,0.05);
-}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;font-weight:300;color:var(--white);overflow-x:hidden;background:#000;cursor:none}
+  :root {
+    --bg: #03050a;
+    --bg-2: #070b14;
+    --line: rgba(255,255,255,.09);
+    --text: #eef3ff;
+    --muted: #8a94ab;
+    --volt: #39d0ff;
+    --volt-2: #2b6bff;
+    --spark: #ffc83d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body.loading { overflow: hidden; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, .display { font-family: 'Space Grotesk', sans-serif; letter-spacing: -.02em; }
 
-/* ══ CURSOR ══ */
-.cur-dot{position:fixed;width:8px;height:8px;background:var(--powder);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--powder),0 0 20px rgba(184,212,232,0.4);transition:transform .1s,width .2s,height .2s}
-.cur-bolt{position:fixed;pointer-events:none;z-index:99998;font-size:22px;line-height:1;transform:translate(-6px,-20px);filter:drop-shadow(0 0 6px rgba(184,212,232,0.8));user-select:none;transition:transform .15s ease,filter .15s}
-.cur-ring{position:fixed;pointer-events:none;z-index:99997;width:36px;height:36px;border-radius:50%;border:1px solid rgba(184,212,232,0.25);transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s}
-.cur-ripple{position:fixed;pointer-events:none;z-index:99996;width:10px;height:10px;border-radius:50%;border:2px solid var(--powder);transform:translate(-50%,-50%) scale(1);opacity:0;transition:none}
+  /* ---------- Preloader ---------- */
+  #loader {
+    position: fixed; inset: 0; z-index: 100; background: var(--bg);
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px;
+    transition: opacity .8s ease, visibility .8s;
+  }
+  #loader.done { opacity: 0; visibility: hidden; }
+  #loader .brand { font-family: 'Space Grotesk'; font-size: clamp(28px, 6vw, 64px); font-weight: 700; letter-spacing: .04em; }
+  #loader .brand span { color: var(--volt); text-shadow: 0 0 24px var(--volt); }
+  #loader .count { font-family: 'Space Grotesk'; color: var(--muted); font-size: 13px; letter-spacing: .3em; }
+  #loader .bar { width: min(260px, 60vw); height: 1px; background: var(--line); overflow: hidden; }
+  #loader .bar i { display: block; height: 100%; width: 0; background: var(--volt); box-shadow: 0 0 12px var(--volt); }
 
-/* ══ INTRO ══ */
-#intro{position:fixed;inset:0;z-index:9999;background:#1C39BB;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease}
-#intro.hide{opacity:0;pointer-events:none}
-#lc{position:absolute;inset:0;width:100%;height:100%}
-#flash{position:absolute;inset:0;background:rgba(28,57,187,0.95);opacity:0;pointer-events:none;z-index:5}
-.intro-logo{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,72px);font-weight:600;letter-spacing:6px;color:#fff;text-transform:uppercase;opacity:0;transition:opacity .6s ease;position:relative;z-index:10}
-.intro-logo em{font-style:italic;font-weight:300;color:var(--powder)}
-.intro-sub{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:rgba(184,212,232,0.6);margin-top:14px;opacity:0;transition:opacity .6s .3s ease;position:relative;z-index:10}
-.intro-year{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:4px;color:rgba(255,255,255,0.2);margin-top:8px;opacity:0;transition:opacity .6s .5s ease;position:relative;z-index:10}
-.intro-logo.show,.intro-sub.show,.intro-year.show{opacity:1}
-.progress{position:absolute;bottom:60px;width:200px;height:1px;background:rgba(255,255,255,0.08);overflow:hidden;z-index:10}
-.pbar{height:100%;width:0%;background:linear-gradient(to right,#2563a8,#b8d4e8);box-shadow:0 0 8px #b8d4e8;transition:width .05s linear}
+  /* ---------- 3D canvas ---------- */
+  #scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .grain {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
-/* ══ SITE ══ */
-#site{opacity:0;transition:opacity 1s ease;background:var(--deep)}
-#site.show{opacity:1}
-#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
-.site{position:relative;z-index:2}
+  /* ---------- Nav ---------- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px clamp(16px, 4vw, 48px);
+    transition: background .4s, padding .4s, border-color .4s;
+    border-bottom: 1px solid transparent;
+  }
+  nav.scrolled { background: rgba(3,5,10,.7); backdrop-filter: blur(14px); padding-top: 14px; padding-bottom: 14px; border-color: var(--line); }
+  .logo { font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px; display: flex; align-items: center; gap: 10px; }
+  .logo .bolt { width: 26px; height: 26px; color: var(--volt); filter: drop-shadow(0 0 8px var(--volt)); }
+  .logo em { font-style: normal; color: var(--volt); }
+  .nav-links { display: flex; gap: 34px; font-size: 13px; color: #c5cde0; }
+  .nav-links a { position: relative; }
+  .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -6px; height: 1px; width: 0; background: var(--volt); transition: width .3s; }
+  .nav-links a:hover::after { width: 100%; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 600; letter-spacing: .02em;
+    padding: 12px 20px; border-radius: 4px; cursor: pointer; border: 0;
+    transition: transform .2s, box-shadow .3s, background .3s;
+  }
+  .btn-volt { background: var(--volt); color: #001521; box-shadow: 0 0 0 rgba(57,208,255,0); }
+  .btn-volt:hover { box-shadow: 0 0 30px rgba(57,208,255,.55); transform: translateY(-2px); }
+  .btn-ghost { border: 1px solid rgba(255,255,255,.25); color: var(--text); background: transparent; }
+  .btn-ghost:hover { border-color: var(--volt); color: var(--volt); }
+  .menu-btn { display: none; background: none; border: 1px solid var(--line); color: var(--text); width: 42px; height: 42px; border-radius: 50%; cursor: pointer; }
 
-/* ══ PLASMA OVERLAY ══ */
-#plasma{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.18}
+  /* ---------- Layout ---------- */
+  main, footer { position: relative; z-index: 2; }
+  section { padding: 140px clamp(16px, 5vw, 64px); max-width: 1400px; margin: 0 auto; }
+  .eyebrow { font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: .32em; color: var(--volt); text-transform: uppercase; display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--volt); }
+  .h2 { font-size: clamp(36px, 5.5vw, 76px); line-height: 1; font-weight: 700; text-transform: uppercase; }
+  .h2 .dim { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.45); }
 
-/* ══ NAV ══ */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 56px;height:68px;background:rgba(13,45,79,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(184,212,232,0.1)}
-.logo{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;letter-spacing:3px;color:#fff;text-decoration:none}
-.logo em{font-style:italic;color:var(--powder);font-weight:300}
-.nav-links{display:flex;gap:36px;align-items:center}
-.nav-links a{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.45);text-decoration:none;transition:color .3s}
-.nav-links a:hover{color:var(--powder)}
-.nav-cta{padding:8px 22px;border:1px solid rgba(184,212,232,0.35);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--powder);background:transparent;cursor:none;font-family:'Inter',sans-serif;transition:all .3s}
-.nav-cta:hover{background:rgba(184,212,232,0.1)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px;background:none;border:none}
-.hamburger span{width:22px;height:1px;background:rgba(255,255,255,0.6);display:block;transition:all .3s}
-.mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(13,45,79,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(184,212,232,0.1);flex-direction:column;z-index:99}
-.mobile-menu.open{display:flex}
-.mobile-menu a,.mobile-menu button{padding:18px 32px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;border:none;background:none;font-family:'Inter',sans-serif;cursor:none;border-bottom:1px solid rgba(255,255,255,0.05);text-align:left;transition:color .3s}
-.mobile-menu a:hover,.mobile-menu button:hover{color:var(--powder)}
+  /* ---------- Hero ---------- */
+  .hero { min-height: 100vh; max-width: none; padding-top: 120px; padding-bottom: 40px; display: grid; grid-template-rows: 1fr auto; position: relative; }
+  .hero-top { display: flex; gap: 28px; align-items: flex-start; padding-top: 6vh; }
+  .hero-index { font-family: 'Space Grotesk'; font-size: 12px; color: var(--muted); padding-top: 14px; min-width: 60px; }
+  .hero-index b { color: var(--text); }
+  .hero-index .dots { display: flex; gap: 5px; margin-top: 8px; }
+  .hero-index .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); }
+  .hero-index .dots i:first-child { background: var(--volt); box-shadow: 0 0 8px var(--volt); }
+  .hero h1 { font-size: clamp(44px, 8.4vw, 132px); line-height: .92; font-weight: 700; text-transform: uppercase; }
+  .hero h1 .line { display: block; overflow: hidden; }
+  .hero h1 .line span { display: inline-block; transform: translateY(110%); transition: transform 1.2s cubic-bezier(.2,.8,.2,1); }
+  body.ready .hero h1 .line span { transform: none; }
+  body.ready .hero h1 .line:nth-child(2) span { transition-delay: .12s; }
+  .hero h1 .glow { color: var(--volt); text-shadow: 0 0 40px rgba(57,208,255,.6); }
+  .hero-sub { margin-top: 26px; font-size: 12px; letter-spacing: .3em; color: var(--muted); text-transform: uppercase; }
+  .hero-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; }
+  .socials { display: flex; flex-direction: column; gap: 8px; font-size: 11px; letter-spacing: .2em; color: var(--muted); }
+  .socials a:hover { color: var(--volt); }
+  .scroll-cue { display: flex; align-items: center; gap: 12px; font-size: 11px; letter-spacing: .25em; color: var(--muted); }
+  .scroll-cue .ring { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(6px); } }
+  .hero-card { max-width: 330px; padding: 22px; border-left: 1px solid var(--volt); background: linear-gradient(90deg, rgba(7,14,28,.85), rgba(3,5,10,.55)); backdrop-filter: blur(8px); }
+  .hero-card h3 { font-size: 17px; margin-bottom: 8px; }
+  .hero-card p { font-size: 13px; line-height: 1.6; color: var(--muted); margin-bottom: 18px; }
+  .hero-card .row { display: flex; gap: 10px; flex-wrap: wrap; }
 
-/* ══ HERO ══ */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 80px 80px;position:relative;overflow:hidden}
-.eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--powder);margin-bottom:30px;display:flex;align-items:center;gap:14px}
-.eyebrow::before{content:'';width:26px;height:1px;background:var(--powder);opacity:.6}
-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,8vw,104px);font-weight:300;line-height:1.0;letter-spacing:-1px;margin-bottom:26px}
-h1 .dim{color:rgba(255,255,255,0.28);font-style:italic;display:block}
-h1 .bright{color:#fff;font-weight:600;display:block}
+  /* ---------- Stats ---------- */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 0; max-width: 1400px; }
+  .stat { padding: 44px 28px; border-right: 1px solid var(--line); background: rgba(3,5,10,.55); backdrop-filter: blur(6px); }
+  .stat:last-child { border-right: 0; }
+  .stat .num { font-family: 'Space Grotesk'; font-size: clamp(40px, 5vw, 68px); font-weight: 700; line-height: 1; }
+  .stat .num sup { font-size: .4em; color: var(--volt); vertical-align: top; margin-left: 4px; }
+  .stat .lbl { margin-top: 12px; font-size: 11px; letter-spacing: .22em; color: var(--muted); text-transform: uppercase; }
 
-/* GLITCH */
-.glitch{position:relative;display:inline-block}
-.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;font-family:inherit;font-size:inherit;font-weight:inherit;font-style:inherit}
-.glitch::before{color:#7ab8e8;clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%);animation:glitch1 3s infinite linear;opacity:0}
-.glitch::after{color:#e87ab8;clip-path:polygon(0 55%,100% 55%,100% 75%,0 75%);animation:glitch2 3s infinite linear;opacity:0}
-.glitch:hover::before,.glitch:hover::after{opacity:1}
-@keyframes glitch1{0%,90%{transform:translate(0)}91%{transform:translate(-3px,1px)}92%{transform:translate(3px,-1px)}93%{transform:translate(-2px,2px)}94%{transform:translate(0)}100%{transform:translate(0)}}
-@keyframes glitch2{0%,90%{transform:translate(0)}91%{transform:translate(3px,-2px)}92%{transform:translate(-3px,1px)}93%{transform:translate(2px,-1px)}94%{transform:translate(0)}100%{transform:translate(0)}}
+  /* ---------- Expertises ---------- */
+  .sec-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 70px; flex-wrap: wrap; }
+  .sec-head p { max-width: 380px; color: var(--muted); line-height: 1.7; font-size: 15px; }
+  .grid-exp { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .exp {
+    position: relative; padding: 40px 32px 34px; background: var(--bg); overflow: hidden; min-height: 300px;
+    display: flex; flex-direction: column; transition: background .4s;
+  }
+  .exp::before {
+    content: ''; position: absolute; width: 380px; height: 380px; border-radius: 50%;
+    left: var(--mx, 50%); top: var(--my, 50%); transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(57,208,255,.18), transparent 65%);
+    opacity: 0; transition: opacity .4s; pointer-events: none;
+  }
+  .exp:hover::before { opacity: 1; }
+  .exp .n { font-family: 'Space Grotesk'; font-size: 13px; color: var(--muted); }
+  .exp h3 { font-size: 24px; margin: 60px 0 14px; transition: color .3s; }
+  .exp:hover h3 { color: var(--volt); }
+  .exp p { font-size: 14px; line-height: 1.65; color: var(--muted); flex: 1; }
+  .exp .tag { margin-top: 26px; font-size: 11px; letter-spacing: .2em; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .exp .tag::before { content: ''; width: 6px; height: 6px; background: var(--volt); box-shadow: 0 0 10px var(--volt); border-radius: 50%; }
+  .exp.new { background: linear-gradient(160deg, rgba(255,200,61,.1), var(--bg) 60%); }
+  .exp.new .n { color: var(--spark); }
+  .exp.new .tag::before { background: var(--spark); box-shadow: 0 0 10px var(--spark); }
+  .exp.new:hover h3 { color: var(--spark); }
 
-.hero-p{max-width:480px;font-size:15px;line-height:1.9;color:rgba(255,255,255,0.4);margin-bottom:40px}
-.btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:64px}
+  /* ---------- Heritage ---------- */
+  .gens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; position: relative; }
+  .gens::before { content: ''; position: absolute; top: 9px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, var(--volt), rgba(57,208,255,.1)); }
+  .gen { padding-top: 46px; position: relative; }
+  .gen::before { content: ''; position: absolute; top: 3px; left: 0; width: 13px; height: 13px; border-radius: 50%; background: var(--bg); border: 1px solid var(--volt); box-shadow: 0 0 14px var(--volt); }
+  .gen .when { font-size: 11px; letter-spacing: .24em; color: var(--volt); }
+  .gen h3 { font-size: clamp(30px, 3.4vw, 46px); line-height: 1; margin: 18px 0 16px; font-weight: 600; }
+  .gen h3 b { display: block; font-weight: 700; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.6); }
+  .gen p { color: var(--muted); line-height: 1.7; font-size: 14px; max-width: 340px; }
 
-/* MAGNETIC BUTTONS */
-.b-solid{padding:13px 30px;background:linear-gradient(135deg,var(--mid),var(--light));border:none;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#fff;cursor:none;box-shadow:0 6px 24px rgba(37,99,168,0.4);transition:box-shadow .3s,transform .1s;display:inline-block}
-.b-solid:hover{box-shadow:0 10px 40px rgba(37,99,168,0.6)}
-.b-ghost{padding:13px 30px;border:1px solid rgba(184,212,232,0.28);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.6);background:transparent;cursor:none;transition:border-color .3s,color .3s,transform .1s;display:inline-block}
-.b-ghost:hover{border-color:rgba(184,212,232,.6);color:#fff}
+  /* ---------- References ---------- */
+  .refs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .ref-col h4 { font-family: 'Space Grotesk'; font-size: 12px; letter-spacing: .28em; color: var(--volt); padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+  .ref { padding: 22px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; align-items: center; transition: padding .3s; }
+  .ref:hover { padding-left: 10px; }
+  .ref strong { display: block; font-family: 'Space Grotesk'; font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .ref span { font-size: 13px; color: var(--muted); }
+  .ref .arr { color: var(--muted); transition: color .3s, transform .3s; }
+  .ref:hover .arr { color: var(--volt); transform: translateX(4px); }
 
-/* STATS */
-.stats{display:flex;gap:52px;flex-wrap:wrap}
-.sn{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:#fff;line-height:1;transition:color .3s}
-.sn sup{font-size:16px;color:var(--powder)}
-.sn.done{color:var(--powder)}
-.sl{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.26);margin-top:5px}
+  /* ---------- Quality band ---------- */
+  .marquee { overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 26px 0; position: relative; z-index: 2; background: rgba(3,5,10,.6); }
+  .marquee .track { display: flex; gap: 60px; width: max-content; animation: slide 30s linear infinite; font-family: 'Space Grotesk'; font-size: clamp(28px, 4vw, 54px); font-weight: 700; text-transform: uppercase; white-space: nowrap; }
+  .marquee .track span:nth-child(even) { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.4); }
+  .marquee .track i { color: var(--volt); font-style: normal; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  .quality { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center; }
+  .quality p.lead { color: var(--muted); line-height: 1.7; margin-top: 26px; max-width: 520px; }
+  .q-stats { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .q-stats div { background: var(--bg-2); padding: 28px 30px; display: flex; justify-content: space-between; align-items: center; }
+  .q-stats b { font-family: 'Space Grotesk'; font-size: 38px; }
+  .q-stats div:nth-child(2) b { color: var(--volt); text-shadow: 0 0 20px rgba(57,208,255,.5); }
+  .q-stats span { font-size: 11px; letter-spacing: .22em; color: var(--muted); text-align: right; }
 
-/* ══ SEPARATOR ══ */
-.sep{display:flex;align-items:center;gap:20px;padding:0 80px}
-.sl1{flex:1;height:1px;background:rgba(184,212,232,0.1)}
-.sd{width:3px;height:3px;border-radius:50%;background:var(--powder);opacity:.35}
+  /* ---------- Contact ---------- */
+  .contact { display: grid; grid-template-columns: 1fr 1.1fr; gap: 70px; }
+  .c-info { margin-top: 46px; display: grid; gap: 26px; }
+  .c-info div small { display: block; font-size: 11px; letter-spacing: .24em; color: var(--volt); margin-bottom: 8px; }
+  .c-info div p { line-height: 1.7; color: #c9d1e4; font-size: 15px; }
+  .c-info a:hover { color: var(--volt); }
+  form { padding: 40px; border: 1px solid var(--line); background: rgba(7,11,20,.75); backdrop-filter: blur(10px); display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field.full { grid-column: 1 / -1; }
+  label { font-size: 11px; letter-spacing: .2em; color: var(--muted); }
+  input, select, textarea {
+    background: transparent; border: 0; border-bottom: 1px solid rgba(255,255,255,.18);
+    color: var(--text); font: inherit; font-size: 15px; padding: 10px 0; outline: none; transition: border-color .3s;
+  }
+  select option { background: var(--bg-2); }
+  textarea { resize: vertical; min-height: 100px; }
+  input:focus, select:focus, textarea:focus { border-color: var(--volt); }
+  form .btn { justify-self: start; }
+  .form-note { grid-column: 1 / -1; font-size: 13px; color: var(--volt); min-height: 1em; }
 
-/* ══ SECTIONS ══ */
-.sec{padding:110px 80px;max-width:1280px;margin:0 auto}
-.stag{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--powder);margin-bottom:16px}
-.stag::before{content:'';width:22px;height:1px;background:var(--powder);opacity:.6}
-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,50px);font-weight:300;line-height:1.1;color:#fff;margin-bottom:56px}
-h2 em{font-style:italic;color:rgba(255,255,255,.3)}
+  footer { border-top: 1px solid var(--line); padding: 34px clamp(16px, 5vw, 64px); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  footer .cert { display: flex; align-items: center; gap: 8px; letter-spacing: .2em; color: var(--text); }
+  footer .cert::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #3dff9a; box-shadow: 0 0 10px #3dff9a; }
 
-/* ══ CARD TILT 3D ══ */
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(184,212,232,0.07)}
-.card{background:var(--deep);padding:40px 32px;position:relative;overflow:hidden;transition:background .4s;cursor:none;transform-style:preserve-3d;will-change:transform}
-.card:hover{background:rgba(26,74,122,0.5)}
-.card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(to right,var(--powder),transparent);transform:scaleX(0);transform-origin:left;transition:transform .5s}
-.card:hover::before{transform:scaleX(1)}
-/* arc spark between cards */
-.card-arc{position:absolute;top:0;right:-1px;width:2px;height:100%;pointer-events:none;z-index:10}
-.cn{font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;color:rgba(184,212,232,.06);position:absolute;top:16px;right:20px;line-height:1;pointer-events:none}
-.ch{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:#fff;margin-bottom:11px;margin-top:4px}
-.cp{font-size:13px;line-height:1.85;color:rgba(255,255,255,.37)}
-.badge{display:inline-block;margin-top:18px;padding:4px 11px;border:1px solid rgba(184,212,232,.17);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--powder)}
+  /* ---------- Reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
 
-/* ══ ARC CANVAS ══ */
-#arc-canvas{position:fixed;inset:0;pointer-events:none;z-index:3;opacity:0;transition:opacity .3s}
-
-/* ══ TIMELINE ══ */
-.tl-card{background:var(--deep);padding:42px 32px;border-top:2px solid rgba(184,212,232,.1);transition:border-color .4s;transform-style:preserve-3d}
-.tl-card:hover{border-top-color:var(--powder)}
-.tg{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--powder);margin-bottom:16px}
-.tn{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:400;color:#fff;margin-bottom:13px;line-height:1.2}
-.td{font-size:13px;line-height:1.9;color:rgba(255,255,255,.37)}
-
-/* ══ ENERGY CABLE ══ */
-.cable-wrap{padding:0 80px;overflow:hidden;position:relative;height:4px;margin:0}
-#cable-svg{width:100%;height:4px;display:block}
-
-/* ══ REFS ══ */
-.refs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.rcard{padding:32px;border:1px solid rgba(184,212,232,.08);background:var(--glass);backdrop-filter:blur(8px);transition:border-color .3s,transform .3s;transform-style:preserve-3d}
-.rcard:hover{border-color:rgba(184,212,232,.2)}
-.rcat{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--powder);margin-bottom:16px}
-.ri{font-size:13px;color:rgba(255,255,255,.42);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.5}
-.ri:last-child{border-bottom:none}
-
-/* ══ QUALITY ══ */
-.qual{padding:68px 80px;background:linear-gradient(135deg,rgba(26,74,122,.5),rgba(13,45,79,.95));border-top:1px solid rgba(184,212,232,.1);border-bottom:1px solid rgba(184,212,232,.1);display:flex;align-items:center;justify-content:space-between;gap:56px;flex-wrap:wrap}
-.qp{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.5vw,36px);font-weight:300;line-height:1.3;margin-bottom:10px;color:#fff}
-.qs{font-size:12px;color:rgba(255,255,255,.32);font-style:italic;line-height:1.7;max-width:380px;display:block}
-.qbs{display:flex;flex-wrap:wrap;gap:12px}
-.qb{padding:16px 22px;border:1px solid rgba(184,212,232,.13);text-align:center;min-width:130px;transition:border-color .3s,transform .2s;transform-style:preserve-3d}
-.qb:hover{border-color:rgba(184,212,232,.4)}
-.qbn{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--powder);margin-bottom:4px}
-.qbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28)}
-
-/* ══ CONTACT ══ */
-.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
-.clist{display:flex;flex-direction:column}
-.ci{display:flex;align-items:flex-start;gap:16px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.05)}
-.ci:first-child{border-top:1px solid rgba(255,255,255,.05)}
-.cicon{width:32px;height:32px;flex-shrink:0;border:1px solid rgba(184,212,232,.18);display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:2px}
-.clbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--powder);margin-bottom:5px}
-.cval{font-size:13px;color:rgba(255,255,255,.55);line-height:1.65}
-.cform{display:flex;flex-direction:column;gap:13px}
-.cform label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);display:block;margin-bottom:6px}
-.cform input,.cform textarea,.cform select{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(184,212,232,.1);color:#fff;padding:11px 14px;font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .3s;resize:none}
-.cform input:focus,.cform textarea:focus,.cform select:focus{border-color:rgba(184,212,232,.38)}
-.cform select option{background:var(--deep);color:#fff}
-
-/* ══ FOOTER ══ */
-footer{padding:34px 80px;border-top:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-.fl{font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:3px;color:rgba(255,255,255,.25)}
-.fc{font-size:11px;color:rgba(255,255,255,.15);letter-spacing:1px}
-.fct{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--powder);opacity:.4}
-
-/* ══ SCROLL REVEAL ══ */
-.rv{opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s ease}
-.rv.in{opacity:1;transform:translateY(0)}
-.rv2{opacity:0;transform:translateY(20px);transition:opacity .85s .18s ease,transform .85s .18s ease}
-.rv2.in{opacity:1;transform:translateY(0)}
-
-/* ══ MATRIX RAIN (canvas behind) ══ */
-#matrix{position:fixed;inset:0;z-index:0;opacity:0.03;pointer-events:none}
-
-/* ══ RESPONSIVE ══ */
-@media(max-width:900px){
-  nav{padding:0 24px}.nav-links{display:none}.hamburger{display:flex}
-  .hero,.sec{padding-left:28px;padding-right:28px}
-  .sep,.cable-wrap{padding:0 28px}.qual{padding:52px 28px}footer{padding:28px}
-  .grid3,.refs{grid-template-columns:1fr}.cgrid{grid-template-columns:1fr;gap:40px}
-  .stats{gap:32px}
-  body{cursor:auto}.cur-dot,.cur-bolt,.cur-ring,.cur-ripple{display:none}
-}
-@media(max-width:600px){
-  h1{font-size:clamp(42px,12vw,62px)}.btns{flex-direction:column}
-  .b-solid,.b-ghost{width:100%;text-align:center}.qual{flex-direction:column}.qbs{justify-content:center}
-}
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1000px) {
+    .grid-exp, .refs { grid-template-columns: 1fr 1fr; }
+    .quality, .contact { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  }
+  @media (max-width: 760px) {
+    .nav-links, nav > .btn { display: none; }
+    .menu-btn { display: grid; place-items: center; }
+    nav.open .nav-links { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(3,5,10,.96); padding: 24px 16px; gap: 22px; border-bottom: 1px solid var(--line); }
+    section { padding-top: 90px; padding-bottom: 90px; }
+    .hero-top { flex-direction: column; gap: 10px; padding-top: 2vh; }
+    .hero-bottom { flex-direction: column; align-items: flex-start; }
+    .socials, .scroll-cue { display: none; }
+    .grid-exp, .refs, .gens { grid-template-columns: 1fr; }
+    .gens::before { display: none; }
+    form { grid-template-columns: 1fr; padding: 24px; }
+    .stat { padding: 30px 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .hero h1 .line span { transition: none; opacity: 1; transform: none; }
+    .marquee .track { animation: none; }
+  }
 </style>
 </head>
-<body>
+<body class="loading">
 
-<!-- CURSORS -->
-<div class="cur-dot"   id="curDot"></div>
-<div class="cur-bolt"  id="curBolt">⚡</div>
-<div class="cur-ring"  id="curRing"></div>
-<div class="cur-ripple" id="curRipple"></div>
-
-<!-- ARC CANVAS -->
-<canvas id="arc-canvas"></canvas>
-
-<!-- MATRIX -->
-<canvas id="matrix"></canvas>
-
-<!-- ══ INTRO ══ -->
-<div id="intro">
-  <canvas id="lc"></canvas>
-  <div id="flash"></div>
-  <div style="position:relative;z-index:10;text-align:center">
-    <div class="intro-logo" id="ilogo">ELECTRO <em>Lumière</em></div>
-    <div class="intro-sub"  id="isub">L'Excellence Électrique</div>
-    <div class="intro-year" id="iyear">Constantine &nbsp;·&nbsp; Algérie &nbsp;·&nbsp; Depuis 1987</div>
-  </div>
-  <div class="progress"><div class="pbar" id="pbar"></div></div>
+<div id="loader">
+  <div class="brand">ELECTRO <span>LUMIÈRE</span></div>
+  <div class="bar"><i id="loadBar"></i></div>
+  <div class="count"><span id="loadNum">000</span> / 100 · CONSTANTINE · DEPUIS 1987</div>
 </div>
 
-<!-- ══ MAIN SITE ══ -->
-<div id="site">
-  <canvas id="bg"></canvas>
-  <canvas id="plasma"></canvas>
-  <div class="site">
+<canvas id="scene"></canvas>
+<div class="grain"></div>
 
-    <nav>
-      <a class="logo" href="#">ELECTRO <em>Lumière</em></a>
-      <div class="nav-links">
-        <a href="#exp">Expertises</a><a href="#hist">Histoire</a>
-        <a href="#ref">Références</a><a href="#contact">Contact</a>
-        <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Devis Technique</button>
-      </div>
-      <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
-    </nav>
+<nav id="nav">
+  <a href="#top" class="logo">
+    <svg class="bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+    Electro<em>Lumière.</em>
+  </a>
+  <div class="nav-links">
+    <a href="#expertises">Expertises</a>
+    <a href="#histoire">Histoire</a>
+    <a href="#references">Références</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="btn btn-volt">Devis technique</a>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+</nav>
 
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#exp" onclick="closeMobile()">Expertises</a>
-      <a href="#hist" onclick="closeMobile()">Histoire</a>
-      <a href="#ref" onclick="closeMobile()">Références</a>
-      <a href="#contact" onclick="closeMobile()">Contact</a>
-      <button onclick="closeMobile()">Devis Technique</button>
-    </div>
-
-    <div class="hero">
-      <div class="eyebrow">Constantine, Algérie &nbsp;·&nbsp; Fondée en 1987</div>
-      <h1>
-        <span class="dim">L'Excellence</span>
-        <span class="bright glitch" data-text="Électrique">Électrique</span>
-      </h1>
-      <p class="hero-p">De la conception du génie civil à la mise en service MT/BT. Solutions clés en main pour infrastructures stratégiques et industrielles. Trois générations d'expertise.</p>
-      <div class="btns">
-        <button class="b-solid mag-btn" onclick="document.getElementById('ref').scrollIntoView({behavior:'smooth'})">Voir nos Références</button>
-        <button class="b-ghost mag-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Demander un Devis</button>
-      </div>
-      <div class="stats" id="statsRow">
-        <div><div class="sn counter" data-target="37" data-suffix="+">0+</div><div class="sl">Années d'expertise</div></div>
-        <div><div class="sn counter" data-target="4250" data-suffix=" kVA">0 kVA</div><div class="sl">Puissance max traitée</div></div>
-        <div><div class="sn counter" data-target="6" data-suffix=" km">0 km</div><div class="sl">Liaison MT record</div></div>
-        <div><div class="sn counter" data-target="3" data-suffix="">0</div><div class="sl">Générations familiales</div></div>
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-top">
+      <div class="hero-index"><b>001</b>/005<div class="dots"><i></i><i></i><i></i></div></div>
+      <div>
+        <h1>
+          <span class="line"><span>L'excellence</span></span>
+          <span class="line"><span class="glow">électrique.</span></span>
+        </h1>
+        <p class="hero-sub">Constantine · Algérie · Fondée en 1987</p>
       </div>
     </div>
-
-    <!-- ENERGY CABLE -->
-    <div class="cable-wrap"><svg id="cable-svg" preserveAspectRatio="none"><line id="cable-line" x1="0" y1="2" x2="0" y2="2" stroke="url(#cg)" stroke-width="2"/><defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0d2d4f"/><stop offset="40%" stop-color="#b8d4e8"/><stop offset="60%" stop-color="#fff"/><stop offset="100%" stop-color="#0d2d4f"/></linearGradient></defs></svg></div>
-
-    <div class="sep"><div class="sl1"></div><div class="sd"></div><div class="sl1"></div></div>
-
-    <div class="sec" id="exp">
-      <div class="rv"><div class="stag">Piliers techniques</div><h2>Maîtrise totale du<br><em>cycle de projet électrique</em></h2></div>
-      <div class="grid3 rv2" id="cardGrid">
-        <div class="card tilt-card"><div class="cn">01</div><div class="ch">Postes Transformateurs</div><div class="cp">Réalisation complète du génie civil et équipement électromécanique de postes MT/BT. Mise en service certifiée.</div><div class="badge">Jusqu'à 1×4250 kVA</div></div>
-        <div class="card tilt-card"><div class="cn">02</div><div class="ch">Réseaux de Distribution</div><div class="cp">Pose de câbles MT et BT sur longues distances. Maîtrise des liaisons MT 120mm² et BT 240mm².</div><div class="badge">Liaisons +6 km</div></div>
-        <div class="card tilt-card"><div class="cn">03</div><div class="ch">Infrastructures Stratégiques</div><div class="cp">Solutions haute puissance pour aéroports, pôles universitaires et sites industriels d'envergure nationale.</div><div class="badge">Projets nationaux</div></div>
-        <div class="card tilt-card"><div class="cn">04</div><div class="ch">Génie Civil Électrique</div><div class="cp">Conception et réalisation des ouvrages associés : tranchées, massifs, locaux techniques.</div><div class="badge">Conception → Livraison</div></div>
-        <div class="card tilt-card"><div class="cn">05</div><div class="ch">Éclairage Public</div><div class="cp">Études et réalisation de réseaux d'éclairage pour voiries, espaces urbains et sites industriels.</div><div class="badge">Normes SONELGAZ</div></div>
-        <div class="card tilt-card" style="border-top:1px solid rgba(184,212,232,.15)"><div class="cn">✦</div><div class="ch">Fabrication d'Armoires</div><div class="cp">Nouvelle activité : fabrication interne d'armoires MT/BT industrielles. Made in Algeria, qualité certifiée.</div><div class="badge" style="color:var(--powder);border-color:rgba(184,212,232,.28)">Lancement 2025</div></div>
+    <div class="hero-bottom">
+      <div class="socials">
+        <a href="mailto:electrolumiere@gmail.com">EMAIL</a>
+        <a href="tel:+213550951621">TÉLÉPHONE</a>
+        <a href="#references">RÉFÉRENCES</a>
       </div>
-    </div>
-
-    <div class="sep"><div class="sl1"></div><div class="sd"></div><div class="sl1"></div></div>
-
-    <div class="sec" id="hist">
-      <div class="rv"><div class="stag">Héritage &amp; Vision</div><h2>Une lignée,<br><em>une seule exigence</em></h2></div>
-      <div class="grid3 rv2">
-        <div class="tl-card tilt-card"><div class="tg">1ère génération · 1987</div><div class="tn">Abdelmajid<br>ZERROUG</div><div class="td">Le pionnier qui a posé les fondations du savoir-faire électrique depuis 1987. Une vision de rigueur qui perdure.</div></div>
-        <div class="tl-card tilt-card"><div class="tg">2ème génération · 2012</div><div class="tn">Salim<br>ZERROUG</div><div class="td">Consolidation et pilotage des grands projets : aéroports de Constantine et d'Annaba, pôles universitaires.</div></div>
-        <div class="tl-card tilt-card"><div class="tg">3ème génération · Aujourd'hui</div><div class="tn">Otman<br>ZERROUG</div><div class="td">Direction technique et modernisation. Innovation numérique au service d'une tradition d'excellence depuis 1987.</div></div>
-      </div>
-    </div>
-
-    <div class="sep"><div class="sl1"></div><div class="sd"></div><div class="sl1"></div></div>
-
-    <div class="sec" id="ref">
-      <div class="rv"><div class="stag">Projets &amp; Références</div><h2>Des solutions pour<br><em>sites stratégiques</em></h2></div>
-      <div class="refs rv2">
-        <div class="rcard tilt-card"><div class="rcat">✈ Aéronautique</div><div class="ri">Aéroport Mohamed Boudiaf — Constantine<br><small style="color:rgba(255,255,255,.28);font-size:11px">Travaux d'électricité et éclairage public</small></div><div class="ri">Aéroport Rabah Bitat — Annaba<br><small style="color:rgba(255,255,255,.28);font-size:11px">Infrastructures électriques aéroportuaires</small></div></div>
-        <div class="rcard tilt-card"><div class="rcat">🏭 Industrie</div><div class="ri">SARL TRIKI AL PROD<br><small style="color:rgba(255,255,255,.28);font-size:11px">Postes de transformation MT/BT</small></div><div class="ri">Global Flexible Packaging<br><small style="color:rgba(255,255,255,.28);font-size:11px">Équipement électromécanique</small></div><div class="ri">COSIDER<br><small style="color:rgba(255,255,255,.28);font-size:11px">Partenaire sur projets d'envergure</small></div></div>
-        <div class="rcard tilt-card"><div class="rcat">🏛 Secteur Public</div><div class="ri">Pôle Universitaire Ali Mendjeli<br><small style="color:rgba(255,255,255,.28);font-size:11px">Aménagement électrique complet</small></div><div class="ri">Cour de Justice Zouaghi Sliman<br><small style="color:rgba(255,255,255,.28);font-size:11px">Solutions d'énergie sécurisées</small></div><div class="ri">Lycées &amp; Collèges — Région Constantine<br><small style="color:rgba(255,255,255,.28);font-size:11px">Réseaux et éclairage</small></div></div>
-      </div>
-    </div>
-
-    <div class="qual rv">
-      <div><div class="qp">Engagement Qualité<br><em style="font-family:'Cormorant Garamond',serif;color:rgba(184,212,232,.55)">&amp; Sécurité</em></div><span class="qs">Chaque projet livré avec Attestation de Bonne Exécution. Conformité rigoureuse aux normes SONELGAZ — sans exception.</span></div>
-      <div class="qbs">
-        <div class="qb tilt-card"><div class="qbn">100%</div><div class="qbl">PV de réception</div></div>
-        <div class="qb tilt-card"><div class="qbn">SONELGAZ</div><div class="qbl">Certifié &amp; agréé</div></div>
-        <div class="qb tilt-card"><div class="qbn">37+</div><div class="qbl">Années de confiance</div></div>
-      </div>
-    </div>
-
-    <div class="sec" id="contact">
-      <div class="rv"><div class="stag">Nous contacter</div><h2>Parlons de<br><em>votre projet</em></h2></div>
-      <div class="cgrid rv2">
-        <div class="clist">
-          <div class="ci"><div class="cicon">📍</div><div><div class="clbl">Siège social</div><div class="cval">Aïn El Bey, Constantine, Algérie</div></div></div>
-          <div class="ci"><div class="cicon">📞</div><div><div class="clbl">Direction</div><div class="cval">M. ZERROUG Salim · +213 05 50 95 16 21<br>M. Z. Otman · +213 05 51 88 58 04</div></div></div>
-          <div class="ci"><div class="cicon">✉️</div><div><div class="clbl">Email</div><div class="cval">electrolumiere@gmail.com</div></div></div>
-          <div class="ci"><div class="cicon">🌐</div><div><div class="clbl">Site web</div><div class="cval">electrolumiere.net</div></div></div>
-        </div>
-        <div class="cform">
-          <div><label>Nom complet</label><input type="text" placeholder="M. Ahmed Dupont"></div>
-          <div><label>Entreprise</label><input type="text" placeholder="Votre société"></div>
-          <div><label>Email</label><input type="email" placeholder="contact@exemple.com"></div>
-          <div><label>Téléphone</label><input type="tel" placeholder="+213 0X XX XX XX XX"></div>
-          <div><label>Type de projet</label><select><option value="">— Sélectionner —</option><option>Poste transformateur MT/BT</option><option>Réseau de distribution</option><option>Éclairage public</option><option>Groupe électrogène</option><option>Armoires électriques</option><option>Génie civil électrique</option><option>Autre</option></select></div>
-          <div><label>Description du besoin</label><textarea rows="4" placeholder="Décrivez votre projet..."></textarea></div>
-          <button class="b-solid mag-btn" id="sendBtn" style="margin-top:6px;width:100%" onclick="handleSubmit()">Envoyer la demande</button>
-          <p id="formMsg" style="display:none;font-size:12px;color:rgba(184,212,232,.8);margin-top:8px;letter-spacing:1px">✓ Votre demande a été envoyée. Nous vous contacterons sous 24h.</p>
+      <div class="scroll-cue"><span class="ring">↓</span> DÉFILER</div>
+      <div class="hero-card">
+        <h3>Solutions MT/BT clés en main.</h3>
+        <p>De la conception du génie civil à la mise en service MT/BT. Infrastructures stratégiques et industrielles. Trois générations d'expertise.</p>
+        <div class="row">
+          <a href="#contact" class="btn btn-volt">Demander un devis →</a>
+          <a href="#references" class="btn btn-ghost">Nos références</a>
         </div>
       </div>
     </div>
+  </section>
 
-    <footer>
-      <div class="fl">Electro Lumière</div>
-      <div class="fc">© 2025 SARL ELECTROLUMIERE — Constantine, Algérie. Tous droits réservés.</div>
-      <div class="fct">Certifié SONELGAZ</div>
-    </footer>
-  </div>
-</div>
+  <!-- STATS -->
+  <section class="stats reveal">
+    <div class="stat"><div class="num"><span data-count="37">0</span><sup>+</sup></div><div class="lbl">Années d'expertise</div></div>
+    <div class="stat"><div class="num"><span data-count="4250">0</span><sup>kVA</sup></div><div class="lbl">Puissance max traitée</div></div>
+    <div class="stat"><div class="num"><span data-count="6">0</span><sup>km+</sup></div><div class="lbl">Liaison MT record</div></div>
+    <div class="stat"><div class="num"><span data-count="3">0</span></div><div class="lbl">Générations familiales</div></div>
+  </section>
+
+  <!-- EXPERTISES -->
+  <section id="expertises">
+    <div class="sec-head reveal">
+      <div>
+        <div class="eyebrow">002 · Piliers techniques</div>
+        <h2 class="h2">Maîtrise totale<br><span class="dim">du cycle électrique</span></h2>
+      </div>
+      <p>Du génie civil à la mise en service certifiée, nous pilotons chaque étape de vos projets d'énergie, sans sous-traiter l'essentiel.</p>
+    </div>
+    <div class="grid-exp">
+      <article class="exp reveal"><span class="n">01</span><h3>Postes Transformateurs</h3><p>Réalisation complète du génie civil et équipement électromécanique de postes MT/BT. Mise en service certifiée.</p><span class="tag">JUSQU'À 1×4250 KVA</span></article>
+      <article class="exp reveal"><span class="n">02</span><h3>Réseaux de Distribution</h3><p>Pose de câbles MT et BT sur longues distances. Maîtrise des liaisons MT 120mm² et BT 240mm².</p><span class="tag">LIAISONS +6 KM</span></article>
+      <article class="exp reveal"><span class="n">03</span><h3>Infrastructures Stratégiques</h3><p>Solutions haute puissance pour aéroports, pôles universitaires et sites industriels d'envergure nationale.</p><span class="tag">PROJETS NATIONAUX</span></article>
+      <article class="exp reveal"><span class="n">04</span><h3>Génie Civil Électrique</h3><p>Conception et réalisation des ouvrages associés : tranchées, massifs, locaux techniques.</p><span class="tag">CONCEPTION → LIVRAISON</span></article>
+      <article class="exp reveal"><span class="n">05</span><h3>Éclairage Public</h3><p>Études et réalisation de réseaux d'éclairage pour voiries, espaces urbains et sites industriels.</p><span class="tag">NORMES SONELGAZ</span></article>
+      <article class="exp new reveal"><span class="n">✦ NOUVEAU</span><h3>Fabrication d'Armoires</h3><p>Fabrication interne d'armoires MT/BT industrielles. Made in Algeria, qualité certifiée.</p><span class="tag">LANCEMENT 2025</span></article>
+    </div>
+  </section>
+
+  <!-- HISTOIRE -->
+  <section id="histoire">
+    <div class="sec-head reveal">
+      <div>
+        <div class="eyebrow">003 · Héritage & vision</div>
+        <h2 class="h2">Une lignée,<br><span class="dim">une seule exigence</span></h2>
+      </div>
+      <p>Depuis 1987, le savoir-faire Electrolumière se transmet de père en fils — avec la même rigueur sur chaque chantier.</p>
+    </div>
+    <div class="gens">
+      <div class="gen reveal"><span class="when">1ÈRE GÉNÉRATION · 1987</span><h3>Abdelmajid <b>ZERROUG</b></h3><p>Le pionnier qui a posé les fondations du savoir-faire électrique depuis 1987. Une vision de rigueur qui perdure.</p></div>
+      <div class="gen reveal"><span class="when">2ÈME GÉNÉRATION · 2012</span><h3>Salim <b>ZERROUG</b></h3><p>Consolidation et pilotage des grands projets : aéroports de Constantine et d'Annaba, pôles universitaires.</p></div>
+      <div class="gen reveal"><span class="when">3ÈME GÉNÉRATION · AUJOURD'HUI</span><h3>Otman <b>ZERROUG</b></h3><p>Direction technique et modernisation. Innovation numérique au service d'une tradition d'excellence.</p></div>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section id="references">
+    <div class="sec-head reveal">
+      <div>
+        <div class="eyebrow">004 · Projets & références</div>
+        <h2 class="h2">Des solutions pour<br><span class="dim">sites stratégiques</span></h2>
+      </div>
+    </div>
+    <div class="refs">
+      <div class="ref-col reveal">
+        <h4>✈ AÉRONAUTIQUE</h4>
+        <div class="ref"><div><strong>Aéroport Mohamed Boudiaf</strong><span>Constantine — électricité & éclairage public</span></div><span class="arr">→</span></div>
+        <div class="ref"><div><strong>Aéroport Rabah Bitat</strong><span>Annaba — infrastructures aéroportuaires</span></div><span class="arr">→</span></div>
+      </div>
+      <div class="ref-col reveal">
+        <h4>🏭 INDUSTRIE</h4>
+        <div class="ref"><div><strong>SARL TRIKI AL PROD</strong><span>Postes de transformation MT/BT</span></div><span class="arr">→</span></div>
+        <div class="ref"><div><strong>Global Flexible Packaging</strong><span>Équipement électromécanique</span></div><span class="arr">→</span></div>
+        <div class="ref"><div><strong>COSIDER</strong><span>Partenaire sur projets d'envergure</span></div><span class="arr">→</span></div>
+      </div>
+      <div class="ref-col reveal">
+        <h4>🏛 SECTEUR PUBLIC</h4>
+        <div class="ref"><div><strong>Pôle Universitaire Ali Mendjeli</strong><span>Aménagement électrique complet</span></div><span class="arr">→</span></div>
+        <div class="ref"><div><strong>Cour de Justice Zouaghi Sliman</strong><span>Solutions d'énergie sécurisées</span></div><span class="arr">→</span></div>
+        <div class="ref"><div><strong>Lycées & Collèges</strong><span>Région Constantine — réseaux et éclairage</span></div><span class="arr">→</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee"><div class="track">
+    <span>Postes MT/BT</span><i>⚡</i><span>Réseaux</span><i>⚡</i><span>Éclairage public</span><i>⚡</i><span>Armoires</span><i>⚡</i><span>Génie civil</span><i>⚡</i>
+    <span>Postes MT/BT</span><i>⚡</i><span>Réseaux</span><i>⚡</i><span>Éclairage public</span><i>⚡</i><span>Armoires</span><i>⚡</i><span>Génie civil</span><i>⚡</i>
+  </div></div>
+
+  <!-- QUALITE -->
+  <section>
+    <div class="quality">
+      <div class="reveal">
+        <div class="eyebrow">Engagement</div>
+        <h2 class="h2">Qualité<br><span class="dim">& sécurité</span></h2>
+        <p class="lead">Chaque projet livré avec Attestation de Bonne Exécution. Conformité rigoureuse aux normes SONELGAZ — sans exception.</p>
+      </div>
+      <div class="q-stats reveal">
+        <div><b>100%</b><span>PV DE<br>RÉCEPTION</span></div>
+        <div><b>SONELGAZ</b><span>CERTIFIÉ<br>& AGRÉÉ</span></div>
+        <div><b>37+</b><span>ANNÉES DE<br>CONFIANCE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact">
+      <div class="reveal">
+        <div class="eyebrow">005 · Nous contacter</div>
+        <h2 class="h2">Parlons de<br><span class="dim">votre projet</span></h2>
+        <div class="c-info">
+          <div><small>SIÈGE SOCIAL</small><p>Aïn El Bey, Constantine, Algérie</p></div>
+          <div><small>DIRECTION</small><p>M. ZERROUG Salim · <a href="tel:+213550951621">+213 05 50 95 16 21</a><br>M. Z. Otman · <a href="tel:+213551885804">+213 05 51 88 58 04</a></p></div>
+          <div><small>EMAIL</small><p><a href="mailto:electrolumiere@gmail.com">electrolumiere@gmail.com</a></p></div>
+        </div>
+      </div>
+      <form id="quote" class="reveal">
+        <div class="field"><label>NOM COMPLET</label><input name="nom" required></div>
+        <div class="field"><label>ENTREPRISE</label><input name="entreprise"></div>
+        <div class="field"><label>EMAIL</label><input name="email" type="email" required></div>
+        <div class="field"><label>TÉLÉPHONE</label><input name="tel" type="tel"></div>
+        <div class="field full"><label>TYPE DE PROJET</label>
+          <select name="type">
+            <option value="">— Sélectionner —</option>
+            <option>Poste transformateur MT/BT</option>
+            <option>Réseau de distribution</option>
+            <option>Éclairage public</option>
+            <option>Groupe électrogène</option>
+            <option>Armoires électriques</option>
+            <option>Génie civil électrique</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="field full"><label>DESCRIPTION DU BESOIN</label><textarea name="desc"></textarea></div>
+        <button class="btn btn-volt" type="submit">Envoyer la demande →</button>
+        <p class="form-note" id="formNote"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="logo" style="font-size:16px">Electro<em style="color:var(--volt);font-style:normal">Lumière.</em></span>
+  <span>© 2025 SARL ELECTROLUMIERE — Constantine, Algérie. Tous droits réservés.</span>
+  <span class="cert">CERTIFIÉ SONELGAZ</span>
+</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ═══════════════════════════════════════
-   CURSOR
-═══════════════════════════════════════ */
-var curDot=document.getElementById('curDot'),
-    curBolt=document.getElementById('curBolt'),
-    curRing=document.getElementById('curRing'),
-    curRipple=document.getElementById('curRipple');
-var cx=0,cy=0,rx=0,ry=0;
+/* ================= 3D ENERGY CORE ================= */
+(function () {
+  const canvas = document.getElementById('scene');
+  if (!window.THREE) return;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 0, 9);
 
-document.addEventListener('mousemove',function(e){
-  cx=e.clientX; cy=e.clientY;
-  curDot.style.left=cx+'px'; curDot.style.top=cy+'px';
-  curBolt.style.left=cx+'px'; curBolt.style.top=cy+'px';
-});
-(function trailLoop(){
-  requestAnimationFrame(trailLoop);
-  rx+=(cx-rx)*0.1; ry+=(cy-ry)*0.1;
-  curRing.style.left=rx+'px'; curRing.style.top=ry+'px';
+  const root = new THREE.Group();
+  scene.add(root);
+
+  // Plasma orb: displaced sphere with fresnel glow
+  const orbUniforms = { uTime: { value: 0 }, uPulse: { value: 0 } };
+  const orb = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.55, 64),
+    new THREE.ShaderMaterial({
+      uniforms: orbUniforms,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      vertexShader: `
+        uniform float uTime; uniform float uPulse;
+        varying vec3 vN; varying vec3 vView; varying float vD;
+        float wave(vec3 p){
+          return sin(p.x*3.1+uTime*1.3)*sin(p.y*2.7+uTime*1.1)*sin(p.z*3.3+uTime*.9)
+               + .5*sin(p.x*7.+uTime*2.)*sin(p.y*6.+uTime*1.7)*sin(p.z*8.-uTime);
+        }
+        void main(){
+          float d = wave(position) * (.16 + uPulse*.18);
+          vD = d;
+          vec3 p = position + normal * d;
+          vec4 mv = modelViewMatrix * vec4(p,1.);
+          vN = normalize(normalMatrix * normal);
+          vView = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv;
+        }`,
+      fragmentShader: `
+        uniform float uTime;
+        varying vec3 vN; varying vec3 vView; varying float vD;
+        void main(){
+          float f = pow(1. - abs(dot(vN, vView)), 2.2);
+          vec3 deep = vec3(.05,.22,1.);
+          vec3 volt = vec3(.25,.85,1.);
+          vec3 hot  = vec3(.85,.97,1.);
+          vec3 c = mix(deep, volt, f);
+          c = mix(c, hot, smoothstep(.12,.3,vD));
+          float veins = smoothstep(.96,1.,sin(vD*40.+uTime*3.));
+          c += veins*volt*.6;
+          gl_FragColor = vec4(c, .25 + f*.85);
+        }`
+    })
+  );
+  root.add(orb);
+
+  // Wireframe shell
+  const shell = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.95, 2),
+    new THREE.MeshBasicMaterial({ color: 0x39d0ff, wireframe: true, transparent: true, opacity: .08 })
+  );
+  root.add(shell);
+
+  // Core glow sprite
+  const glowTex = (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 128;
+    const g = c.getContext('2d');
+    const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grd.addColorStop(0, 'rgba(200,240,255,1)');
+    grd.addColorStop(.25, 'rgba(57,208,255,.6)');
+    grd.addColorStop(1, 'rgba(0,40,120,0)');
+    g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(c);
+  })();
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false, opacity: .9 }));
+  glow.scale.set(7, 7, 1);
+  root.add(glow);
+
+  // Orbit rings of particles (electrons)
+  const rings = [];
+  [[3.0, 1400, 1.25, .2], [3.6, 1100, -0.35, -.4], [4.3, 900, .7, .9]].forEach(([r, n, tiltX, tiltZ], k) => {
+    const pos = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const rr = r + (Math.random() - .5) * .25;
+      pos[i*3] = Math.cos(a) * rr;
+      pos[i*3+1] = (Math.random() - .5) * .08;
+      pos[i*3+2] = Math.sin(a) * rr;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const pts = new THREE.Points(g, new THREE.PointsMaterial({
+      color: k === 2 ? 0xffc83d : 0x8fe6ff, size: k === 2 ? .035 : .028,
+      transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthWrite: false
+    }));
+    const holder = new THREE.Group();
+    holder.rotation.set(tiltX, 0, tiltZ);
+    holder.add(pts);
+    root.add(holder);
+    rings.push({ pts, speed: (k % 2 ? -1 : 1) * (.12 + k * .05) });
+  });
+
+  // Ambient dust
+  const dustN = 900, dust = new Float32Array(dustN * 3);
+  for (let i = 0; i < dustN * 3; i++) dust[i] = (Math.random() - .5) * 30;
+  const dustG = new THREE.BufferGeometry();
+  dustG.setAttribute('position', new THREE.BufferAttribute(dust, 3));
+  const dustPts = new THREE.Points(dustG, new THREE.PointsMaterial({ color: 0x39d0ff, size: .02, transparent: true, opacity: .45 }));
+  scene.add(dustPts);
+
+  // Lightning arcs from the core
+  const bolts = [];
+  const boltMat = new THREE.LineBasicMaterial({ color: 0xbff2ff, transparent: true, blending: THREE.AdditiveBlending });
+  function spawnBolt() {
+    const dir = new THREE.Vector3(Math.random() - .5, Math.random() - .5, Math.random() - .5).normalize();
+    const len = 2.2 + Math.random() * 2.2, segs = 14, pts = [];
+    const side = new THREE.Vector3().crossVectors(dir, new THREE.Vector3(0, 1, 0)).normalize();
+    const up = new THREE.Vector3().crossVectors(dir, side);
+    for (let i = 0; i <= segs; i++) {
+      const t = i / segs;
+      const jitter = (i === 0 || i === segs) ? 0 : .22;
+      pts.push(dir.clone().multiplyScalar(1.4 + t * len)
+        .add(side.clone().multiplyScalar((Math.random() - .5) * jitter * 2))
+        .add(up.clone().multiplyScalar((Math.random() - .5) * jitter * 2)));
+    }
+    const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), boltMat.clone());
+    root.add(line);
+    bolts.push({ line, life: 1 });
+    orbUniforms.uPulse.value = 1;
+  }
+
+  // Interaction
+  const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
+  addEventListener('pointermove', e => {
+    mouse.tx = (e.clientX / innerWidth - .5) * 2;
+    mouse.ty = (e.clientY / innerHeight - .5) * 2;
+  });
+  addEventListener('click', () => { spawnBolt(); spawnBolt(); });
+
+  function resize() {
+    const w = innerWidth, h = innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize); resize();
+
+  const clock = new THREE.Clock();
+  let intro = 0;
+  (function tick() {
+    const t = clock.getElapsedTime(), dt = Math.min(clock.getDelta(), .05);
+    orbUniforms.uTime.value = t;
+    orbUniforms.uPulse.value *= .94;
+
+    mouse.x += (mouse.tx - mouse.x) * .05;
+    mouse.y += (mouse.ty - mouse.y) * .05;
+
+    // Scroll: orb drifts right and recedes, fades past the hero
+    const sp = Math.min(scrollY / innerHeight, 3);
+    const mobile = innerWidth < 760;
+    const baseX = mobile ? 0 : 2.5;
+    const baseY = mobile ? -.4 : .45;
+    intro += (1 - intro) * .03;
+    root.position.x = baseX + sp * (mobile ? 0 : 1.2);
+    root.position.y = baseY + sp * .6;
+    root.position.z = -sp * 2.5;
+    root.scale.setScalar((mobile ? .75 : 1) * intro);
+    canvas.style.opacity = Math.max(.22, 1 - sp * .7);
+
+    root.rotation.y = t * .12 + mouse.x * .6;
+    root.rotation.x = mouse.y * .35;
+    shell.rotation.y = -t * .2; shell.rotation.z = t * .1;
+    rings.forEach(r => r.pts.rotation.y += r.speed * .016);
+    dustPts.rotation.y = t * .01;
+    glow.material.opacity = .75 + Math.sin(t * 3) * .08 + orbUniforms.uPulse.value * .3;
+
+    if (Math.random() < .02) spawnBolt();
+    for (let i = bolts.length - 1; i >= 0; i--) {
+      const b = bolts[i];
+      b.life -= .07;
+      b.line.material.opacity = Math.max(b.life, 0) * (Math.random() > .3 ? 1 : .3);
+      if (b.life <= 0) { root.remove(b.line); b.line.geometry.dispose(); bolts.splice(i, 1); }
+    }
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  })();
 })();
 
-/* ripple on click */
-document.addEventListener('click',function(e){
-  curRipple.style.left=e.clientX+'px';
-  curRipple.style.top=e.clientY+'px';
-  curRipple.style.transition='none';
-  curRipple.style.transform='translate(-50%,-50%) scale(1)';
-  curRipple.style.opacity='0.8';
-  curRipple.style.width='10px'; curRipple.style.height='10px';
-  requestAnimationFrame(function(){
-    curRipple.style.transition='transform .6s ease,opacity .6s ease,width .6s ease,height .6s ease';
-    curRipple.style.transform='translate(-50%,-50%) scale(1)';
-    curRipple.style.width='120px'; curRipple.style.height='120px';
-    curRipple.style.opacity='0';
-  });
-});
-
-document.addEventListener('mousedown',function(){
-  curBolt.style.transform='translate(-6px,-20px) scale(1.5) rotate(-15deg)';
-  curBolt.style.filter='drop-shadow(0 0 14px rgba(184,212,232,1))';
-});
-document.addEventListener('mouseup',function(){
-  curBolt.style.transform='translate(-6px,-20px) scale(1) rotate(0deg)';
-  curBolt.style.filter='drop-shadow(0 0 6px rgba(184,212,232,0.8))';
-});
-
-/* magnetic buttons */
-document.querySelectorAll('.mag-btn').forEach(function(btn){
-  btn.addEventListener('mousemove',function(e){
-    var r=btn.getBoundingClientRect();
-    var bx=e.clientX-r.left-r.width/2;
-    var by=e.clientY-r.top-r.height/2;
-    btn.style.transform='translate('+bx*0.25+'px,'+by*0.25+'px)';
-  });
-  btn.addEventListener('mouseleave',function(){
-    btn.style.transform='translate(0,0)';
-  });
-  btn.addEventListener('mouseenter',function(){
-    curRing.style.width='64px'; curRing.style.height='64px';
-    curRing.style.borderColor='rgba(184,212,232,0.5)';
-    curDot.style.transform='translate(-50%,-50%) scale(0.4)';
-  });
-  btn.addEventListener('mouseleave',function(){
-    curRing.style.width='36px'; curRing.style.height='36px';
-    curRing.style.borderColor='rgba(184,212,232,0.25)';
-    curDot.style.transform='translate(-50%,-50%) scale(1)';
-  });
-});
-
-/* ═══════════════════════════════════════
-   LIGHTNING INTRO
-═══════════════════════════════════════ */
-var lc=document.getElementById('lc'),lctx=lc.getContext('2d');
-lc.width=window.innerWidth; lc.height=window.innerHeight;
-var flashEl=document.getElementById('flash');
-
-function drawBolt(x1,y1,x2,y2,rough,ctx,col,alpha,w){
-  var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
-  if(len<4){
-    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
-    ctx.strokeStyle='rgba('+col+','+alpha+')';ctx.lineWidth=w;
-    ctx.lineCap='round';ctx.stroke();return;
-  }
-  var mx=(x1+x2)/2+(Math.random()-.5)*rough*len*0.5;
-  var my=(y1+y2)/2+(Math.random()-.5)*rough*len*0.5;
-  drawBolt(x1,y1,mx,my,rough*.9,ctx,col,alpha,w);
-  drawBolt(mx,my,x2,y2,rough*.9,ctx,col,alpha,w);
-}
-
-function drawLightning(){
-  lctx.clearRect(0,0,lc.width,lc.height);
-  var W=lc.width,H=lc.height,num=2+Math.floor(Math.random()*2);
-  for(var i=0;i<num;i++){
-    var sx=W*.2+Math.random()*W*.6,sy=0,ex=W*.1+Math.random()*W*.8,ey=H*.4+Math.random()*H*.4;
-    var dx=ex-sx,dy=ey-sy;
-    drawBolt(sx,sy,ex,ey,.5,lctx,'180,212,232',.08,18);
-    drawBolt(sx,sy,ex,ey,.45,lctx,'180,212,232',.15,8);
-    drawBolt(sx,sy,ex,ey,.4,lctx,'200,230,255',.4,3);
-    drawBolt(sx,sy,ex,ey,.35,lctx,'240,248,255',.9,1);
-    for(var b=0;b<3;b++){
-      var t=.2+Math.random()*.5,bx=sx+dx*t+(Math.random()-.5)*60,by=sy+dy*t+(Math.random()-.5)*60;
-      drawBolt(bx,by,bx+(Math.random()-.5)*200,by+Math.random()*120+40,.5,lctx,'180,212,232',.5,1.2);
+/* ================= UI ================= */
+// Preloader
+(function () {
+  const num = document.getElementById('loadNum'), bar = document.getElementById('loadBar');
+  let p = 0;
+  const iv = setInterval(() => {
+    p = Math.min(100, p + Math.ceil(Math.random() * 9));
+    num.textContent = String(p).padStart(3, '0');
+    bar.style.width = p + '%';
+    if (p >= 100) {
+      clearInterval(iv);
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('done');
+        document.body.classList.remove('loading');
+        document.body.classList.add('ready');
+      }, 250);
     }
-  }
-}
+  }, 45);
+})();
 
-function doFlash(){flashEl.style.opacity='.85';setTimeout(function(){flashEl.style.opacity='0';},60);}
-var strikes=0,maxStrikes=8;
+// Nav state + mobile menu
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+document.getElementById('menuBtn').addEventListener('click', e => { e.stopPropagation(); nav.classList.toggle('open'); });
+document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
 
-function strike(){
-  if(strikes>=maxStrikes){endIntro();return;}
-  drawLightning();doFlash();strikes++;
-  document.getElementById('pbar').style.width=(strikes/maxStrikes*100)+'%';
-  if(strikes===2){document.getElementById('ilogo').classList.add('show');document.getElementById('isub').classList.add('show');}
-  if(strikes===4){document.getElementById('iyear').classList.add('show');}
-  var d=300+Math.random()*500;
-  if(strikes===3)d=700;if(strikes===5)d=200;if(strikes===7)d=150;
-  setTimeout(function(){lctx.clearRect(0,0,lc.width,lc.height);setTimeout(strike,80+Math.random()*200);},d);
-}
-
-function endIntro(){
-  document.getElementById('pbar').style.width='100%';
-  flashEl.style.transition='opacity .35s';flashEl.style.opacity='1';
-  setTimeout(function(){
-    flashEl.style.opacity='0';
-    var intro=document.getElementById('intro');
-    intro.classList.add('hide');
-    document.getElementById('site').classList.add('show');
-    document.body.style.overflow='auto';
-    setTimeout(function(){
-      intro.style.display='none';
-      initAll();
-    },800);
-  },350);
-}
-document.body.style.overflow='hidden';
-setTimeout(strike,500);
-
-/* ═══════════════════════════════════════
-   INIT ALL AFTER INTRO
-═══════════════════════════════════════ */
-function initAll(){
-  initBg();
-  initPlasma();
-  initMatrix();
-  initArcCanvas();
-  initCable();
-  initTilt();
-  checkReveal();
-  startCounters();
-}
-
-/* ═══════════════════════════════════════
-   THREE.JS PARTICLES
-═══════════════════════════════════════ */
-function initBg(){
-  var canvas=document.getElementById('bg');
-  var renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  renderer.setSize(innerWidth,innerHeight);
-  renderer.setClearColor(0x0d2d4f,1);
-  var scene=new THREE.Scene();
-  scene.fog=new THREE.FogExp2(0x0d2d4f,.012);
-  var camera=new THREE.PerspectiveCamera(55,innerWidth/innerHeight,.1,400);
-  camera.position.z=48;
-  /* particles that form a circuit pattern */
-  var N=2400,geo=new THREE.BufferGeometry();
-  var pp=new Float32Array(N*3),pc=new Float32Array(N*3);
-  for(var i=0;i<N;i++){
-    var i3=i*3;
-    pp[i3]=(Math.random()-.5)*130;pp[i3+1]=(Math.random()-.5)*130;pp[i3+2]=(Math.random()-.5)*90;
-    var t=Math.random();
-    if(t<.5){pc[i3]=.92;pc[i3+1]=.96;pc[i3+2]=1;}
-    else if(t<.78){pc[i3]=.72;pc[i3+1]=.83;pc[i3+2]=.91;}
-    else{pc[i3]=.23;pc[i3+1]=.51;pc[i3+2]=.78;}
-  }
-  geo.setAttribute('position',new THREE.BufferAttribute(pp,3));
-  geo.setAttribute('color',new THREE.BufferAttribute(pc,3));
-  var pts=new THREE.Points(geo,new THREE.PointsMaterial({size:.14,vertexColors:true,transparent:true,opacity:.55,sizeAttenuation:true}));
-  scene.add(pts);
-  var r1=new THREE.Mesh(new THREE.TorusGeometry(20,.04,6,140),new THREE.MeshBasicMaterial({color:0xb8d4e8,transparent:true,opacity:.07}));
-  r1.position.set(18,2,-8);r1.rotation.x=Math.PI/3;scene.add(r1);
-  var r2=new THREE.Mesh(new THREE.TorusGeometry(12,.03,6,100),new THREE.MeshBasicMaterial({color:0xb8d4e8,transparent:true,opacity:.05}));
-  r2.position.set(-16,-4,-18);r2.rotation.y=Math.PI/4;scene.add(r2);
-  var lm=new THREE.LineBasicMaterial({color:0x2563a8,transparent:true,opacity:.04});
-  for(var j=0;j<10;j++){
-    var lpts=[new THREE.Vector3((Math.random()-.5)*100,-60,(Math.random()-.5)*60),new THREE.Vector3((Math.random()-.5)*100,60,(Math.random()-.5)*60)];
-    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(lpts),lm));
-  }
-  var mx=0,my=0,sy=0;
-  document.addEventListener('mousemove',function(e){mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;});
-  window.addEventListener('scroll',function(){sy=scrollY;});
-  window.addEventListener('resize',function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
-  var t2=0;
-  (function anim(){
-    requestAnimationFrame(anim);t2+=.004;
-    pts.rotation.y=t2*.03+mx*.05;pts.rotation.x=t2*.015+my*.025;
-    r1.rotation.z=t2*.16;r2.rotation.z=-t2*.1;r2.rotation.x=t2*.07;
-    camera.position.x+=(mx*3.5-camera.position.x)*.022;
-    camera.position.y+=(-my*2.5-camera.position.y)*.022;
-    camera.position.z=48-sy*.005;camera.lookAt(0,-sy*.004,0);
-    renderer.render(scene,camera);
-  })();
-}
-
-/* ═══════════════════════════════════════
-   PLASMA WAVE
-═══════════════════════════════════════ */
-function initPlasma(){
-  var c=document.getElementById('plasma');
-  c.width=innerWidth;c.height=innerHeight;
-  var ctx=c.getContext('2d');
-  var pmx=0,pmy=0;
-  document.addEventListener('mousemove',function(e){pmx=e.clientX;pmy=e.clientY;});
-  var pt=0;
-  (function plasmaLoop(){
-    requestAnimationFrame(plasmaLoop);
-    pt+=.012;
-    ctx.clearRect(0,0,c.width,c.height);
-    for(var y=0;y<c.height;y+=18){
-      for(var x=0;x<c.width;x+=18){
-        var dx=x-pmx,dy=y-pmy,dist=Math.sqrt(dx*dx+dy*dy);
-        var v=Math.sin(x/90+pt)+Math.sin(y/90+pt)+Math.sin((x+y)/130+pt)+Math.sin(dist/60-pt*1.5);
-        var alpha=(v+4)/8*0.06;
-        ctx.fillStyle='rgba(184,212,232,'+alpha.toFixed(3)+')';
-        ctx.fillRect(x,y,3,3);
-      }
-    }
-  })();
-}
-
-/* ═══════════════════════════════════════
-   MATRIX RAIN
-═══════════════════════════════════════ */
-function initMatrix(){
-  var c=document.getElementById('matrix');
-  c.width=innerWidth;c.height=innerHeight;
-  var ctx=c.getContext('2d');
-  var cols=Math.floor(c.width/20);
-  var drops=[];
-  for(var i=0;i<cols;i++) drops[i]=Math.random()*c.height/14;
-  var chars='01アイウエオカキクケコサシスセソタチツテト⚡∿∾≈≋';
-  (function matrixLoop(){
-    requestAnimationFrame(matrixLoop);
-    ctx.fillStyle='rgba(13,45,79,0.05)';
-    ctx.fillRect(0,0,c.width,c.height);
-    ctx.fillStyle='#b8d4e8';
-    ctx.font='14px monospace';
-    for(var i=0;i<drops.length;i++){
-      var ch=chars[Math.floor(Math.random()*chars.length)];
-      ctx.fillText(ch,i*20,drops[i]*14);
-      if(drops[i]*14>c.height&&Math.random()>.975) drops[i]=0;
-      drops[i]+=.3;
-    }
-  })();
-}
-
-/* ═══════════════════════════════════════
-   ARC ELECTRICITY BETWEEN CARDS
-═══════════════════════════════════════ */
-function initArcCanvas(){
-  var ac=document.getElementById('arc-canvas');
-  ac.width=innerWidth;ac.height=innerHeight;
-  var actx=ac.getContext('2d');
-  var arcT=0,arcActive=false;
-
-  document.querySelectorAll('.tilt-card').forEach(function(card){
-    card.addEventListener('mouseenter',function(){
-      arcActive=true;
-      ac.style.opacity='1';
+// Reveal on scroll + counters
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    en.target.classList.add('in');
+    en.target.querySelectorAll('[data-count]').forEach(el => {
+      const end = +el.dataset.count, t0 = performance.now(), dur = 1800;
+      (function step(now) {
+        const k = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - k, 3);
+        el.textContent = Math.round(end * e).toLocaleString('fr-FR');
+        if (k < 1) requestAnimationFrame(step);
+      })(t0);
     });
-    card.addEventListener('mouseleave',function(){
-      arcActive=false;
-      ac.style.opacity='0';
-      actx.clearRect(0,0,ac.width,ac.height);
-    });
+    io.unobserve(en.target);
   });
-
-  function drawArc(x1,y1,x2,y2,ctx,alpha){
-    var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy);
-    if(len<3){
-      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);
-      ctx.strokeStyle='rgba(184,212,232,'+alpha+')';
-      ctx.lineWidth=1;ctx.stroke();return;
-    }
-    var mx=(x1+x2)/2+(Math.random()-.5)*len*.3;
-    var my=(y1+y2)/2+(Math.random()-.5)*len*.3;
-    drawArc(x1,y1,mx,my,ctx,alpha*.95);
-    drawArc(mx,my,x2,y2,ctx,alpha*.95);
-  }
-
-  (function arcLoop(){
-    requestAnimationFrame(arcLoop);
-    if(!arcActive) return;
-    arcT++;
-    if(arcT%3!==0) return;
-    actx.clearRect(0,0,ac.width,ac.height);
-    var cards=document.querySelectorAll('.tilt-card');
-    if(cards.length<2) return;
-    for(var i=0;i<Math.min(cards.length-1,3);i++){
-      var r1=cards[i].getBoundingClientRect();
-      var r2=cards[i+1].getBoundingClientRect();
-      var x1=r1.right,y1=r1.top+r1.height/2;
-      var x2=r2.left,y2=r2.top+r2.height/2;
-      drawArc(x1,y1,x2,y2,actx,.6);
-    }
-  })();
-}
-
-/* ═══════════════════════════════════════
-   ENERGY CABLE
-═══════════════════════════════════════ */
-function initCable(){
-  var svg=document.getElementById('cable-svg');
-  var line=document.getElementById('cable-line');
-  var W=svg.parentElement.clientWidth;
-  svg.setAttribute('viewBox','0 0 '+W+' 4');
-  line.setAttribute('x2','0');
-  var cableProgress=0,cableDone=false;
-  function animCable(){
-    if(cableDone) return;
-    requestAnimationFrame(animCable);
-    var r=svg.getBoundingClientRect();
-    if(r.top<innerHeight*.9){
-      cableProgress+=W/60;
-      if(cableProgress>=W){cableProgress=W;cableDone=true;}
-      line.setAttribute('x2',cableProgress.toFixed(0));
-    }
-  }
-  animCable();
-  window.addEventListener('scroll',animCable);
-}
-
-/* ═══════════════════════════════════════
-   3D TILT CARDS
-═══════════════════════════════════════ */
-function initTilt(){
-  document.querySelectorAll('.tilt-card').forEach(function(card){
-    card.addEventListener('mousemove',function(e){
-      var r=card.getBoundingClientRect();
-      var x=(e.clientX-r.left)/r.width-.5;
-      var y=(e.clientY-r.top)/r.height-.5;
-      card.style.transform='perspective(600px) rotateY('+x*12+'deg) rotateX('+(-y*10)+'deg) translateZ(6px)';
-    });
-    card.addEventListener('mouseleave',function(){
-      card.style.transform='perspective(600px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
-    });
-  });
-}
-
-/* ═══════════════════════════════════════
-   COUNTERS
-═══════════════════════════════════════ */
-var countersStarted=false;
-function startCounters(){
-  if(countersStarted) return;
-  var row=document.getElementById('statsRow');
-  if(!row) return;
-  if(row.getBoundingClientRect().top>innerHeight*.95) return;
-  countersStarted=true;
-  document.querySelectorAll('.counter').forEach(function(el){
-    var target=parseInt(el.getAttribute('data-target'));
-    var suffix=el.getAttribute('data-suffix')||'';
-    var start=null;
-    function ease(t){return 1-Math.pow(1-t,3);}
-    (function tick(ts){
-      if(!start) start=ts;
-      var p=Math.min((ts-start)/1800,1);
-      el.textContent=Math.floor(ease(p)*target)+suffix;
-      if(p<1) requestAnimationFrame(tick);
-      else{el.textContent=target+suffix;el.classList.add('done');}
-    })(performance.now());
-  });
-}
-
-/* ═══════════════════════════════════════
-   SCROLL REVEAL
-═══════════════════════════════════════ */
-function checkReveal(){
-  document.querySelectorAll('.rv,.rv2').forEach(function(el){
-    if(el.getBoundingClientRect().top<innerHeight*.92) el.classList.add('in');
-  });
-  startCounters();
-}
-checkReveal();
-window.addEventListener('scroll',checkReveal);
-
-/* ═══════════════════════════════════════
-   UTILS
-═══════════════════════════════════════ */
-document.getElementById('ham').addEventListener('click',function(){
-  document.getElementById('mobileMenu').classList.toggle('open');
+}, { threshold: .15 });
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i % 3) * 0.1 + 's';
+  io.observe(el);
 });
-function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
-function handleSubmit(){
-  document.getElementById('sendBtn').style.display='none';
-  document.getElementById('formMsg').style.display='block';
-}
-window.addEventListener('resize',function(){
-  document.getElementById('arc-canvas').width=innerWidth;
-  document.getElementById('arc-canvas').height=innerHeight;
-  document.getElementById('matrix').width=innerWidth;
-  document.getElementById('matrix').height=innerHeight;
-  document.getElementById('plasma').width=innerWidth;
-  document.getElementById('plasma').height=innerHeight;
+
+// Spotlight following cursor on expertise cards
+document.querySelectorAll('.exp').forEach(card => {
+  card.addEventListener('pointermove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+// Quote form → opens the visitor's mail app with the request pre-filled
+document.getElementById('quote').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = new FormData(e.target);
+  const body = `Nom: ${f.get('nom')}\nEntreprise: ${f.get('entreprise')}\nEmail: ${f.get('email')}\nTéléphone: ${f.get('tel')}\nType de projet: ${f.get('type')}\n\n${f.get('desc')}`;
+  location.href = `mailto:electrolumiere@gmail.com?subject=${encodeURIComponent('Demande de devis — ' + (f.get('type') || 'Projet'))}&body=${encodeURIComponent(body)}`;
+  document.getElementById('formNote').textContent = 'Merci ! Votre application e-mail va s\'ouvrir pour envoyer la demande.';
 });
 </script>
 </body>
